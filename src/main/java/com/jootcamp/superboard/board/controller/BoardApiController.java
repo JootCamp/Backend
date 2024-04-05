@@ -41,7 +41,7 @@ public class BoardApiController {
     @GetMapping("/boards/{id}")
     public ResponseEntity<BoardResponse> findBoard(@PathVariable long id) {
         Board board = boardService.findById(id);
-        return ResponseEntity.status(HttpStatus.CREATED).body(BoardResponse.from(board));
+        return ResponseEntity.status(HttpStatus.OK).body(BoardResponse.from(board));
     }
 
     @GetMapping("/boards")
