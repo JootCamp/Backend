@@ -1,4 +1,15 @@
 spring:
+  profiles:
+    group:
+      dev: profile1
+      test: profile2
+default:
+  string: default property
+---
+spring:
+  config:
+    activate:
+      on-profile: profile1
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${jdbcURL}
@@ -8,3 +19,19 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+---
+spring:
+  config:
+    activate:
+      on-profile: profile2
+  datasource:
+    url: jdbc:h2:mem:testdb
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
