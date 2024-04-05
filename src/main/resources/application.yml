@@ -4,3 +4,7 @@ spring:
     url: ${jdbcURL}
     username: ${jdbcUsername}
     password: ${jdbcPassword}
+
+  jpa:
+    hibernate:
+      ddl-auto: create
