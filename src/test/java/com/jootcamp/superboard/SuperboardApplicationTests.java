@@ -18,11 +18,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
+import static com.jootcamp.superboard.common.constants.UserConstant.USER_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -48,7 +50,7 @@ class SuperboardApplicationTests {
         boardRepository.deleteAll();
     }
 
-    @DisplayName("addArticle: 게시판 추가에 성공한다.")
+    @DisplayName("addBoard: 게시판 추가에 성공한다.")
     @Test
     public void addBoard() throws Exception {
         //Given
@@ -77,6 +79,30 @@ class SuperboardApplicationTests {
     }
 
 
+    @DisplayName("findBoard: 게시판 조회에 성공한다.")
+    @Test
+    public void findBoard() throws Exception {
+        //Given
+        final String url = "/boards/{id}";
+        final String title = "유머게시판";
+        final String content = "웃긴 게시글만 모음";
+
+        BoardEntity boardEntity = boardRepository.save(BoardEntity.builder()
+                .title(title)
+                .description(content)
+                .userName(USER_NAME)
+                .build());
+
+        //when
+        final ResultActions resultActions = mockMvc.perform(get(url, boardEntity.getId()));
+
+        //then
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.description").value(content))
+                .andExpect(jsonPath("$.title").value(title))
+                .andDo(print());
+
+    }
     //Given
 
     //when

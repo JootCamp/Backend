@@ -2,8 +2,10 @@ package com.jootcamp.superboard.board.controller.dto;
 
 import com.jootcamp.superboard.board.service.dto.Board;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public class BoardResponse {
     private long id;
     private String title;
