@@ -15,52 +15,46 @@ public class BoardEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
+    @Column(updatable = false)
     private long id;
 
-    @Column(name = "title", nullable = false)
+    @Column( nullable = false)
     private String title;
 
-    @Column(name = "description")
+
     private String description;
 
     @CreatedDate
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 
-    @Column(name = "created_by")
-    private String createdBy;
+    private long createdBy;
 
-    @Column(name = "deleted")
     private boolean deleted;
 
-    @Column(name = "modified_by")
-    private String modifiedBy;
+    private Long modifiedBy;
 
-    @Column(name = "deleted_by")
-    private String deletedBy;
+    private Long deletedBy;
 
     @Builder
-    public BoardEntity(String title, String description, String userName) {
+    public BoardEntity(String title, String description, long userId) {
         this.title = title;
         this.description = description;
-        this.createdBy = userName;
+        this.createdBy = userId;
         this.deleted = false;
     }
 
-    public void delete(String userName) {
-        this.deletedBy = userName;
+    public void delete(long userId) {
+        this.deletedBy = userId;
         this.deleted = true;
     }
 
-    public void update(String title, String description, String userName){
+    public void update(String title, String description, long userId){
         this.title = title;
         this.description = description;
-        this.modifiedBy = userName;
+        this.modifiedBy = userId;
     }
 
 }

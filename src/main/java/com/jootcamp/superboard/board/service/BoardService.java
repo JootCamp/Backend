@@ -1,8 +1,8 @@
 package com.jootcamp.superboard.board.service;
 
 import com.jootcamp.superboard.board.repository.Entity.BoardEntity;
+import com.jootcamp.superboard.board.repository.Entity.EntityNotFoundException;
 import com.jootcamp.superboard.board.service.dto.UpsertBoard;
-import com.jootcamp.superboard.board.service.dto.DeleteBoard;
 import com.jootcamp.superboard.board.service.dto.Board;
 import com.jootcamp.superboard.board.repository.BoardRepository;
 import jakarta.transaction.Transactional;
@@ -28,33 +28,27 @@ public class BoardService {
                 .toList();
     }
 
-    public Board findById(long id) {
+    public Board findById(long boardId) {
 
-        BoardEntity board = boardRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("not found Board : "+ id));
-
-        // 만약 삭제된 게시물이라면?
-        if (board.isDeleted()) {
-            throw new IllegalStateException("게시글이 삭제되었습니다. id = " + id);
-        }
+        BoardEntity board = boardRepository.findByIdAndDeletedIsFalse(boardId)
+                .orElseThrow(()->new EntityNotFoundException("not found Board : "+ boardId));
 
         return Board.from(board);
     }
 
     @Transactional
-    public void delete(DeleteBoard deleteBoard) {
-        BoardEntity board = boardRepository.findById(deleteBoard.getId())
-                .orElseThrow(()-> new IllegalArgumentException("not found Board : "+ deleteBoard.getId()));
-        // 만약 삭제된 게시물이라면?
-        board.delete(deleteBoard.getUserName());
+    public void delete(long userId, long boardId) {
+        BoardEntity board = boardRepository.findByIdAndDeletedIsFalse(boardId)
+                .orElseThrow(()-> new IllegalArgumentException("not found Board : "+ boardId));
+
+        // soft delete 이렇게 하는게 맞아?
+        if(board!=null) board.delete(userId);
     }
 
     @Transactional
-    public Board update(UpsertBoard updateBoard) {
-        BoardEntity board = boardRepository.findById(updateBoard.getId())
-                .orElseThrow(()-> new IllegalArgumentException("not found Board : "+ updateBoard.getId()));
-        // 만약 삭제된 게시물이라면?
-        board.update(updateBoard.getTitle(), updateBoard.getDescription(), updateBoard.getUserName());
+    public Board update(UpsertBoard updateBoard, long boardId) {
+        BoardEntity board = boardRepository.findByIdAndDeletedIsFalse(boardId)
+                .orElseThrow(()-> new IllegalArgumentException("not found Board : "+ boardId));
 
         return Board.builder()
                 .id(board.getId())

@@ -3,8 +3,6 @@ spring:
     group:
       dev: profile1
       test: profile2
-default:
-  string: default property
 ---
 spring:
   config:

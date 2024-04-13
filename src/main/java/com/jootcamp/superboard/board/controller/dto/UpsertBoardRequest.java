@@ -12,18 +12,9 @@ public class UpsertBoardRequest {
     private String title;
     private String description;
 
-    public UpsertBoard toCreateBoard(String userName) {
+    public UpsertBoard toUpsertBoard(long userId) {
         return UpsertBoard.builder()
-                .userName(userName)
-                .title(title)
-                .description(description)
-                .build();
-    }
-
-    public UpsertBoard toUpdateBoard(Long boardId, String userName) {
-        return UpsertBoard.builder()
-                .id(boardId)
-                .userName(userName)
+                .userId(userId)
                 .title(title)
                 .description(description)
                 .build();
