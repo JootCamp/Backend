@@ -14,14 +14,13 @@ public class UpsertBoard {
 
     private String title;
     private String description;
-    private long id;
-    private String userName;
+    private long userId;
 
     public BoardEntity toEntity() {
         return BoardEntity.builder()
                 .title(title)
                 .description(description)
-                .userName(userName)
+                .userId(userId)
                 .build();
     }
 }

@@ -105,6 +105,42 @@ class SuperboardApplicationTests {
                 .andDo(print());
 
     }
+
+    @DisplayName("findBoard: 게시판 목록 조회에 성공한다.")
+    @Test
+    public void findAllBoard() throws Exception {
+        //Given
+        final String url = "/boards";
+        final String title = "유머게시판";
+        final String content = "웃긴 게시글만 모음";
+
+        BoardEntity boardEntity1 = boardRepository.save(BoardEntity.builder()
+                .title(title+1)
+                .description(content)
+                .userName(USER_NAME)
+                .build());
+
+        BoardEntity boardEntity2 = boardRepository.save(BoardEntity.builder()
+                .title(title+2)
+                .description(content)
+                .userName(USER_NAME)
+                .build());
+
+        BoardEntity boardEntity3 = boardRepository.save(BoardEntity.builder()
+                .title(title+3)
+                .description(content)
+                .userName(USER_NAME)
+                .build());
+
+        //when
+        final ResultActions resultActions = mockMvc.perform(get(url));
+
+        //then
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value(title+1))
+                .andDo(print());
+
+    }
     //Given
 
     //when
