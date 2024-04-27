@@ -1,8 +1,6 @@
 package com.jootcamp.superboard.board.repository.exception;
 
 import com.jootcamp.superboard.common.exception.NotFoundException;
-import com.jootcamp.superboard.common.exception.code.ErrorCode;
-
 public class BoardNotFoundException extends NotFoundException {
 
 
