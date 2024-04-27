@@ -1,7 +1,7 @@
 package com.jootcamp.superboard.board.service.dto;
 
 
-import com.jootcamp.superboard.board.repository.Entity.BoardEntity;
+import com.jootcamp.superboard.board.repository.entity.BoardEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
