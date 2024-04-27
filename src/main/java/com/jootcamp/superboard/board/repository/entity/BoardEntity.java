@@ -1,4 +1,4 @@
-package com.jootcamp.superboard.board.repository.Entity;
+package com.jootcamp.superboard.board.repository.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

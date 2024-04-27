@@ -1,7 +1,7 @@
 package com.jootcamp.superboard;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jootcamp.superboard.board.repository.Entity.BoardEntity;
+import com.jootcamp.superboard.board.repository.entity.BoardEntity;
 import com.jootcamp.superboard.board.controller.dto.UpsertBoardRequest;
 import com.jootcamp.superboard.board.repository.BoardRepository;
 import org.junit.jupiter.api.BeforeEach;

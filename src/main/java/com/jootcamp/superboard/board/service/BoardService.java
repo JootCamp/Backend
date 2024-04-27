@@ -1,7 +1,7 @@
 package com.jootcamp.superboard.board.service;
 
-import com.jootcamp.superboard.board.repository.Entity.BoardEntity;
-import com.jootcamp.superboard.board.repository.Entity.EntityNotFoundException;
+import com.jootcamp.superboard.board.repository.entity.BoardEntity;
+import com.jootcamp.superboard.board.repository.exception.BoardNotFoundException;
 import com.jootcamp.superboard.board.service.dto.UpsertBoard;
 import com.jootcamp.superboard.board.service.dto.Board;
 import com.jootcamp.superboard.board.repository.BoardRepository;
@@ -31,7 +31,7 @@ public class BoardService {
     public Board findById(long boardId) {
 
         BoardEntity board = boardRepository.findByIdAndDeletedIsFalse(boardId)
-                .orElseThrow(()->new EntityNotFoundException("not found Board : "+ boardId));
+                .orElseThrow(()->new BoardNotFoundException(boardId));
 
         return Board.from(board);
     }
@@ -39,16 +39,17 @@ public class BoardService {
     @Transactional
     public void delete(long userId, long boardId) {
         BoardEntity board = boardRepository.findByIdAndDeletedIsFalse(boardId)
-                .orElseThrow(()-> new IllegalArgumentException("not found Board : "+ boardId));
+                .orElseThrow(()-> new BoardNotFoundException(boardId));
 
-        // soft delete 이렇게 하는게 맞아?
-        if(board!=null) board.delete(userId);
+        board.delete(userId);
     }
 
     @Transactional
     public Board update(UpsertBoard updateBoard, long boardId) {
         BoardEntity board = boardRepository.findByIdAndDeletedIsFalse(boardId)
-                .orElseThrow(()-> new IllegalArgumentException("not found Board : "+ boardId));
+                .orElseThrow(()-> new BoardNotFoundException(boardId));
+
+        board.update(updateBoard.getTitle(), updateBoard.getDescription(), updateBoard.getUserId());
 
         return Board.builder()
                 .id(board.getId())

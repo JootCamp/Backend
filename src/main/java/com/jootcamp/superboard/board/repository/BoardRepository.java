@@ -1,6 +1,6 @@
 package com.jootcamp.superboard.board.repository;
 
-import com.jootcamp.superboard.board.repository.Entity.BoardEntity;
+import com.jootcamp.superboard.board.repository.entity.BoardEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
