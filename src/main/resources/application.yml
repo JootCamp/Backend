@@ -3,6 +3,10 @@ spring:
     group:
       dev: profile1
       test: profile2
+
+  jpa:
+    hibernate:
+      ddl-auto: create
 ---
 spring:
   config:
@@ -14,9 +18,7 @@ spring:
     username: ${jdbcUsername}
     password: ${jdbcPassword}
 
-  jpa:
-    hibernate:
-      ddl-auto: create
+
 ---
 spring:
   config:
@@ -33,3 +35,4 @@ spring:
     properties:
       hibernate:
         format_sql: true
+

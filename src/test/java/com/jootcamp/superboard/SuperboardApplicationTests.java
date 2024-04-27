@@ -19,7 +19,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
-import static com.jootcamp.superboard.common.constants.UserConstant.USER_NAME;
+import static com.jootcamp.superboard.common.constants.UserConstant.USER_ID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -69,14 +70,14 @@ class SuperboardApplicationTests {
                         .content(requestBody));
 
         //then
-        result.andExpect(status().isCreated());
+        result.andExpect(status().isOk());
 
         List<BoardEntity> boards = boardRepository.findAll();
 
         assertThat(boards.size()).isEqualTo(1);
         assertThat(boards.get(0).getTitle()).isEqualTo(title);
         assertThat(boards.get(0).getDescription()).isEqualTo(content);
-        assertThat(boards.get(0).getCreatedBy()).isEqualTo("zz간지캡짱최준혁zz");
+        assertThat(boards.get(0).getCreatedBy()).isEqualTo(2024L);
 
     }
 
@@ -92,7 +93,7 @@ class SuperboardApplicationTests {
         BoardEntity boardEntity = boardRepository.save(BoardEntity.builder()
                 .title(title)
                 .description(content)
-                .userName(USER_NAME)
+                .userId(USER_ID)
                 .build());
 
         //when
@@ -117,19 +118,22 @@ class SuperboardApplicationTests {
         BoardEntity boardEntity1 = boardRepository.save(BoardEntity.builder()
                 .title(title+1)
                 .description(content)
-                .userName(USER_NAME)
+                .userId(USER_ID)
+
                 .build());
 
         BoardEntity boardEntity2 = boardRepository.save(BoardEntity.builder()
                 .title(title+2)
                 .description(content)
-                .userName(USER_NAME)
+                .userId(USER_ID)
+
                 .build());
 
         BoardEntity boardEntity3 = boardRepository.save(BoardEntity.builder()
                 .title(title+3)
                 .description(content)
-                .userName(USER_NAME)
+                .userId(USER_ID)
+
                 .build());
 
         //when
