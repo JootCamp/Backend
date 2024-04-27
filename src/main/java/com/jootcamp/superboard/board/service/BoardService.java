@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.jootcamp.superboard.common.exception.code.ErrorCode.NOT_FOUND_BOARD_ERROR;
-
 @RequiredArgsConstructor
 @Service
 public class BoardService {
