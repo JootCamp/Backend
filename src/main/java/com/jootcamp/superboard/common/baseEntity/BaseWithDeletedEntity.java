@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @MappedSuperclass
 public abstract class BaseWithDeletedEntity extends BaseTimeEntity {
-    private boolean deleted;
+    private boolean isDeleted;
     private Long deletedBy;
 
 }

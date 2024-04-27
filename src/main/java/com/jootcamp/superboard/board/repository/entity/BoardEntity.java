@@ -3,10 +3,6 @@ package com.jootcamp.superboard.board.repository.entity;
 import com.jootcamp.superboard.common.baseEntity.BaseWithDeletedEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -29,7 +25,7 @@ public class BoardEntity extends BaseWithDeletedEntity {
         this.title = title;
         this.description = description;
         this.setCreatedBy(userId);
-        this.setDeleted(false);
+        this.setDeleted(true);
     }
 
     public void delete(long userId) {
