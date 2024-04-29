@@ -25,7 +25,7 @@ public class BoardEntity extends BaseWithDeletedEntity {
         this.title = title;
         this.description = description;
         this.setCreatedBy(userId);
-        this.setDeleted(true);
+        this.setDeleted(false);
     }
 
     public void delete(long userId) {
