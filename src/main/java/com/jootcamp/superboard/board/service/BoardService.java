@@ -22,7 +22,7 @@ public class BoardService {
     }
 
     public List<Board> findAll() {
-        List<BoardEntity> boards = boardRepository.findAllByDeletedIsFalse();
+        List<BoardEntity> boards = boardRepository.findAllByIsDeletedIsFalse();
         return boards.stream()
                 .map(Board::from)
                 .toList();
@@ -30,7 +30,7 @@ public class BoardService {
 
     public Board findById(long boardId) {
 
-        BoardEntity board = boardRepository.findByIdAndDeletedIsFalse(boardId)
+        BoardEntity board = boardRepository.findByIdAndIsDeletedIsFalse(boardId)
                 .orElseThrow(()->new BoardNotFoundException(boardId));
 
         return Board.from(board);
@@ -38,7 +38,7 @@ public class BoardService {
 
     @Transactional
     public void delete(long userId, long boardId) {
-        BoardEntity board = boardRepository.findByIdAndDeletedIsFalse(boardId)
+        BoardEntity board = boardRepository.findByIdAndIsDeletedIsFalse(boardId)
                 .orElseThrow(()-> new BoardNotFoundException(boardId));
 
         board.delete(userId);
@@ -46,7 +46,7 @@ public class BoardService {
 
     @Transactional
     public Board update(UpsertBoard updateBoard, long boardId) {
-        BoardEntity board = boardRepository.findByIdAndDeletedIsFalse(boardId)
+        BoardEntity board = boardRepository.findByIdAndIsDeletedIsFalse(boardId)
                 .orElseThrow(()-> new BoardNotFoundException(boardId));
 
         board.update(updateBoard.getTitle(), updateBoard.getDescription(), updateBoard.getUserId());

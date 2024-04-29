@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
 
-    Optional<BoardEntity> findByIdAndDeletedIsFalse(long id);
-    List<BoardEntity> findAllByDeletedIsFalse();
+    Optional<BoardEntity> findByIdAndIsDeletedIsFalse(Long boardId);
+    List<BoardEntity> findAllByIsDeletedIsFalse();
 }
