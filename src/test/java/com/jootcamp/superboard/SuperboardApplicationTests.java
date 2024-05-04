@@ -119,21 +119,18 @@ class SuperboardApplicationTests {
                 .title(title+1)
                 .description(content)
                 .userId(USER_ID)
-
                 .build());
 
         BoardEntity boardEntity2 = boardRepository.save(BoardEntity.builder()
                 .title(title+2)
                 .description(content)
                 .userId(USER_ID)
-
                 .build());
 
         BoardEntity boardEntity3 = boardRepository.save(BoardEntity.builder()
                 .title(title+3)
                 .description(content)
                 .userId(USER_ID)
-
                 .build());
 
         //when
@@ -141,17 +138,32 @@ class SuperboardApplicationTests {
 
         //then
         resultActions.andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].title").value(title+1))
+                .andExpect(jsonPath("$[1].title").value(title+2))
                 .andDo(print());
 
     }
-    //Given
 
-    //when
-
-    //then
+    @DisplayName("deleteBoard: 게시판 삭제에 성공한다")
     @Test
-    void contextLoads() {
+    public void deleteBoard() throws Exception {
+        //Given
+        final String url = "/boards/{id}";
+        final String title = "유머게시판";
+        final String content = "웃긴 게시글만 모음";
+
+        BoardEntity boardEntity = boardRepository.save(BoardEntity.builder()
+                .title(title)
+                .description(content)
+                .userId(USER_ID)
+                .build());
+
+        //when
+        mockMvc.perform(delete(url, boardEntity.getId())).andExpect(status().isNoContent());
+
+        //then
+        List<BoardEntity> boardResponses = boardRepository.findAllByIsDeletedIsFalse();
+        assertThat(boardResponses).isEmpty();
     }
+
 
 }
