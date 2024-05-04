@@ -1,6 +1,7 @@
 package com.jootcamp.superboard.user.repository.entity;
 
 import com.jootcamp.superboard.common.baseEntity.BaseWithDeletedEntity;
+import com.jootcamp.superboard.user.service.dto.UpsertUser;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,13 +20,16 @@ public class UserEntity extends BaseWithDeletedEntity {
     private String email;
     private String password;
     private String nickname;
+    private String name;
     private String role;
 
     @Builder
-    public UserEntity(String email, String password, String nickname) {
-        this.email = email;
-        this.password = password;
-        this.nickname = nickname;
+    public UserEntity(UpsertUser user) {
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.nickname = user.getNickname();
+        this.name = user.getName();
         this.setDeleted(false);
+        this.role = "USER";
     }
 }
