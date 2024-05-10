@@ -8,10 +8,10 @@ public class LoginRequest {
     private String email;
     private String password;
 
-    public User toUser(String encodingPass) {
+    public User toUser() {
         return User.builder()
                 .email(email)
-                .password(encodingPass)
+                .password(password)
                 .build();
     }
 }

@@ -12,10 +12,10 @@ public class UpsertUserRequest {
     private String nickname;
     private String name;
 
-    public UpsertUser toUpsertUser(String encodingPass) {
+    public UpsertUser toUpsertUser() {
         return UpsertUser.builder()
                 .email(email)
-                .password(encodingPass)
+                .password(password)
                 .name(name)
                 .nickname(nickname)
                 .build();
