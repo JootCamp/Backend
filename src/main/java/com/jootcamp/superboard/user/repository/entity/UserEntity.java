@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "user")
+@Table(name = "member")
 @NoArgsConstructor
 public class UserEntity extends BaseWithDeletedEntity {
     @Id
