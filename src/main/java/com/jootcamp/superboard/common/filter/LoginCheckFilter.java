@@ -14,9 +14,9 @@ import java.util.Arrays;
 public class LoginCheckFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletRequest httpRequest = request;
         String requestURI = httpRequest.getRequestURI();
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        HttpServletResponse httpResponse = response;
 
         try {
             if (!shouldNotFilter(request)) {
@@ -33,12 +33,13 @@ public class LoginCheckFilter extends OncePerRequestFilter {
                     return; //여기가 중요, 미인증 사용자는 다음으로 진행하지 않고 끝!
                 }
             }
+
             chain.doFilter(request, response); //다음 필터 진행. 없다면 서블릿 띄우기
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         } finally {
-            System.out.println("인증 체크 필터 종료 {}" + requestURI);
+            System.out.println("인증 체크 필터 종료 :" + requestURI);
         }
 
     }
@@ -48,10 +49,10 @@ public class LoginCheckFilter extends OncePerRequestFilter {
      */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/", "/login", "/logout","/css/*", "/signup"};
+        String[] excludePath = {"/", "/login", "/logout", "/css/*", "/signup"};
         String path = request.getRequestURI();
-        System.out.println("snf "+path);
-        return Arrays.stream(excludePath).anyMatch(path::startsWith);
+        System.out.println("snf " + path);
+        return Arrays.stream(excludePath).anyMatch(path::equals);
     }
 
 }
