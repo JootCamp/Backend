@@ -5,9 +5,11 @@ import com.jootcamp.superboard.user.controller.dto.UpsertUserRequest;
 import com.jootcamp.superboard.user.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +22,6 @@ public class UserApiController {
     //회원가입
     @PostMapping("/signup")
     public ResponseEntity<Boolean> signup(@RequestBody UpsertUserRequest userRequest) throws Exception {
-
         Boolean result = userService.signup(userRequest.toUpsertUser());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
@@ -35,6 +36,15 @@ public class UserApiController {
 
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
+    }
+
+    @GetMapping("/isLogin")
+    public ResponseEntity<String> isLogin(HttpServletRequest httpRequest){
+        HttpSession session = httpRequest.getSession(false);
+        if (session == null || session.getAttribute("userId") == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unknown");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(session.getAttribute("userId").toString());
     }
 
 }
