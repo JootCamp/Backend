@@ -14,22 +14,15 @@ import java.util.Arrays;
 public class LoginCheckFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        HttpServletRequest httpRequest = request;
-        String requestURI = httpRequest.getRequestURI();
-        HttpServletResponse httpResponse = response;
-
+        String requestURI = request.getRequestURI();
         try {
             if (!shouldNotFilter(request)) {
                 System.out.println("통과");
-                HttpSession session = httpRequest.getSession(false);
+                HttpSession session = request.getSession(false);
                 if (session == null || session.getAttribute("userId") == null) {
                     System.out.println("미인증 사용자 요청 {}" + requestURI);
                     //로그인으로 redirect
-<<<<<<< HEAD
-                    httpResponse.sendError(401, "로그인 필요");
-=======
-                    httpResponse.setStatus(401);
->>>>>>> faa3f70 (feat(BE) : #18 OncePerRequestFilter 상속받고 shouldNotFilter 적용)
+                    response.sendError(401, "로그인 필요");
                     return; //여기가 중요, 미인증 사용자는 다음으로 진행하지 않고 끝!
                 }
             }
