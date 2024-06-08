@@ -12,7 +12,9 @@ public class UpsertUser {
     private String nickname;
     private String name;
 
-    public UserEntity toEntity() {
+    public UserEntity toEntity(String password) {
+        this.password = password;
+
         return UserEntity.builder()
                 .user(this)
                 .build();
