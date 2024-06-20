@@ -16,7 +16,6 @@ public class LoginCheckFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         try {
-            if (!shouldNotFilter(request)) {
                 System.out.println("통과");
                 HttpSession session = request.getSession(false);
                 if (session == null || session.getAttribute("userId") == null) {
@@ -25,7 +24,7 @@ public class LoginCheckFilter extends OncePerRequestFilter {
                     response.sendError(401, "로그인 필요");
                     return; //여기가 중요, 미인증 사용자는 다음으로 진행하지 않고 끝!
                 }
-            }
+
 
             chain.doFilter(request, response); //다음 필터 진행. 없다면 서블릿 띄우기
         } catch (Exception e) {
@@ -42,10 +41,10 @@ public class LoginCheckFilter extends OncePerRequestFilter {
      */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/", "/login", "/logout", "/css/*", "/signup"};
+        String[] excludePath = {"/login", "/logout", "/css/*", "/signup", "/swagger", "/v3"};
         String path = request.getRequestURI();
         System.out.println("snf " + path);
-        return Arrays.stream(excludePath).anyMatch(path::equals);
+        return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }
 
 }
