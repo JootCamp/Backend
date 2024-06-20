@@ -3,7 +3,10 @@ package com.jootcamp.superboard.user.controller;
 import com.jootcamp.superboard.user.controller.dto.LoginRequest;
 import com.jootcamp.superboard.user.controller.dto.UpsertUserRequest;
 import com.jootcamp.superboard.user.service.UserService;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "User API", description = "유저 서비스를 위한 API 명세서입니다.")
 public class UserApiController {
     private final UserService userService;
 
     //회원가입
     @PostMapping("/signup")
+    @Operation(summary = "회원가입", description = "회원가입을 위한 API")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "400", description = "이미 존재하는 이메일이라면 400 에러 응답"),
+                    @ApiResponse(responseCode = "200", description = "회원가입 성공하면 200 응답")
+            }
+    )
     public ResponseEntity<Boolean> signup(@RequestBody UpsertUserRequest userRequest) throws Exception {
         Boolean result = userService.signup(userRequest.toUpsertUser());
         return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -28,18 +39,17 @@ public class UserApiController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpServletRequest) throws Exception {
-        
-
-        Boolean result = userService.login(loginRequest.toUser(), httpServletRequest);
-        if(result) return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<Void> login(@RequestBody LoginRequest loginRequest,
+                                      HttpServletRequest httpServletRequest) throws Exception {
+        boolean result = userService.login(loginRequest.toUser(), httpServletRequest);
+        if (result) return ResponseEntity.status(HttpStatus.OK).build();
 
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
     }
 
     @GetMapping("/isLogin")
-    public ResponseEntity<String> isLogin(HttpServletRequest httpRequest){
+    public ResponseEntity<String> isLogin(HttpServletRequest httpRequest) {
         HttpSession session = httpRequest.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unknown");
