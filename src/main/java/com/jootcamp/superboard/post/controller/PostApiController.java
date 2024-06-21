@@ -20,8 +20,9 @@ public class PostApiController {
     private final PostService postService;
 
     @PostMapping("/posts")
-    public ResponseEntity<PostResponse> create(@RequestBody UpsertPostRequest postRequest) {
+    public ResponseEntity<PostResponse> createPost(@RequestBody UpsertPostRequest postRequest) {
         Post savaPost = postService.create(postRequest.toUpsertPost(USER_ID));
-        return ResponseEntity.status(HttpStatus.CREATED).body(PostResponse.from(savaPost));
+        return ResponseEntity.ok().body(PostResponse.from(savaPost));
+
     }
 }
