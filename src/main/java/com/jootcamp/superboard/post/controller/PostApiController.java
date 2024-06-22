@@ -47,4 +47,10 @@ public class PostApiController {
         postService.delete(USER_ID, postId);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/posts/{postId}")
+    public ResponseEntity<PostResponse> updateBoard(@PathVariable("postId") long postId, @RequestBody UpsertPostRequest upsertPostRequest) {
+        Post post = postService.update(upsertPostRequest.toUpsertPost(USER_ID), postId);
+        return ResponseEntity.ok().body(PostResponse.from(post));
+    }
 }
