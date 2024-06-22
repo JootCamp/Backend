@@ -45,4 +45,5 @@ public class PostApiController {
         Post post = postService.findById(postId);
         return ResponseEntity.ok().body(PostResponse.from(post));
     }
+
 }
