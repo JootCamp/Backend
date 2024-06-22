@@ -1,5 +1,6 @@
 ![waving](https://capsule-render.vercel.app/api?type=waving&height=200&text=JootCamp&fontAlign=70&fontAlignY=35&color=gradient)
 
+## 🔍 프로젝트 소개
 이 프로젝트는 세종대학교 17학번 졸업생 최주형의 동기들을 위한 취업 준비 프로젝트로 시작했습니다. <br>
 <br>
 기본적인 게시판, 게시글 CRUD 기능을 먼저 구현합니다. <br>
