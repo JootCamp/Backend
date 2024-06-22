@@ -5,8 +5,11 @@ import com.jootcamp.superboard.post.repository.entity.PostEntity;
 import com.jootcamp.superboard.post.repository.execption.PostNotFoundException;
 import com.jootcamp.superboard.post.service.dto.Post;
 import com.jootcamp.superboard.post.service.dto.UpsertPost;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,4 +34,13 @@ public class PostService {
 
         return Post.from(post);
     }
+
+    @Transactional
+    public void delete(long userId, long postId) {
+        PostEntity post = postRepository.findByIdAndIsDeletedIsFalse(postId)
+                .orElseThrow(()-> new PostNotFoundException(postId));
+
+        post.delete(userId);
+    }
+
 }
