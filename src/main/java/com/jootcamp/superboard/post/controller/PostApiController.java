@@ -25,9 +25,8 @@ public class PostApiController {
 
     @PostMapping("/posts")
     public ResponseEntity<PostResponse> createPost(@RequestBody UpsertPostRequest postRequest) {
-        Post savaPost = postService.create(postRequest.toUpsertPost(USER_ID));
-        return ResponseEntity.ok().body(PostResponse.from(savaPost));
-
+        Post savedPost = postService.create(postRequest.toUpsertPost(USER_ID));
+        return ResponseEntity.ok().body(PostResponse.from(savedPost));
     }
 
     @GetMapping("/posts")
@@ -45,4 +44,5 @@ public class PostApiController {
         Post post = postService.findById(postId);
         return ResponseEntity.ok().body(PostResponse.from(post));
     }
+
 }
