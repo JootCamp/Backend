@@ -43,4 +43,14 @@ public class PostService {
         post.delete(userId);
     }
 
+
+    @Transactional
+    public Post update(UpsertPost upsertPost, long postId) {
+        PostEntity post = postRepository.findByIdAndIsDeletedIsFalse(postId)
+                .orElseThrow(()->new PostNotFoundException(postId));
+
+        post.update(upsertPost.getTitle(), upsertPost.getContent(), upsertPost.getUserId());
+
+        return Post.from(post);
+    }
 }

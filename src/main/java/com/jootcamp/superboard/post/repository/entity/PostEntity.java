@@ -35,4 +35,10 @@ public class PostEntity extends BaseWithDeletedEntity {
         this.setDeleted(true);
     }
 
+    public void update(String title, String content, long userId) {
+        this.title = title;
+        this.content = content;
+        this.setModifiedBy(userId);
+    }
+
 }
