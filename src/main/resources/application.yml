@@ -3,6 +3,7 @@ spring:
     group:
       dev: profile1
       test: profile2
+      prod: profile3
 
   jpa:
     hibernate:
@@ -29,8 +30,6 @@ springdoc:
     display-request-duration: true # 딜레이를 두고 요청하도록 설정
     operations-sorter: alpha # (alpha: 알파벳 순으로 정렬, method: Http method 순으로 정렬)
 
-
-
 ---
 spring:
   config:
@@ -48,3 +47,15 @@ spring:
       hibernate:
         format_sql: true
 
+---
+spring:
+  config:
+    activate:
+      on-profile: profile3
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ${jdbcURL}
+    username: ${jdbcUsername}
+    password: ${jdbcPassword}
+server:
+  port: 80
