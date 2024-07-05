@@ -1,18 +1,17 @@
 package com.jootcamp.superboard.post.controller;
 
+import com.jootcamp.superboard.common.UserInfo;
 import com.jootcamp.superboard.post.dto.PostResponse;
 import com.jootcamp.superboard.post.dto.UpsertPostRequest;
 import com.jootcamp.superboard.post.service.PostService;
 import com.jootcamp.superboard.post.service.dto.Post;
+import com.jootcamp.superboard.user.controller.dto.AuthUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.jootcamp.superboard.common.constants.UserConstant.USER_ID;
 
 
 @RequiredArgsConstructor
@@ -21,8 +20,8 @@ public class PostApiController {
     private final PostService postService;
 
     @PostMapping("/posts")
-    public ResponseEntity<PostResponse> createPost(@RequestBody UpsertPostRequest postRequest) {
-        Post savedPost = postService.create(postRequest.toUpsertPost(USER_ID));
+    public ResponseEntity<PostResponse> createPost(@RequestBody UpsertPostRequest postRequest, @UserInfo AuthUser authUser) {
+        Post savedPost = postService.create(postRequest.toUpsertPost(authUser.getUserId()));
         return ResponseEntity.ok().body(PostResponse.from(savedPost));
     }
 
@@ -43,14 +42,14 @@ public class PostApiController {
     }
 
     @DeleteMapping("/posts/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable("postId") long postId) {
-        postService.delete(USER_ID, postId);
+    public ResponseEntity<Void> deletePost(@PathVariable("postId") long postId, @UserInfo AuthUser authUser) {
+        postService.delete(authUser.getUserId(), postId);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/posts/{postId}")
-    public ResponseEntity<PostResponse> updateBoard(@PathVariable("postId") long postId, @RequestBody UpsertPostRequest upsertPostRequest) {
-        Post post = postService.update(upsertPostRequest.toUpsertPost(USER_ID), postId);
+    public ResponseEntity<PostResponse> updateBoard(@PathVariable("postId") long postId, @RequestBody UpsertPostRequest upsertPostRequest, @UserInfo AuthUser authUser) {
+        Post post = postService.update(upsertPostRequest.toUpsertPost(authUser.getUserId()), postId);
         return ResponseEntity.ok().body(PostResponse.from(post));
     }
 }
