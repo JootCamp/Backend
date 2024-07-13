@@ -13,4 +13,5 @@
 
 모두 화이팅.   <br>
 
-- [스워거 주소](#http://jootcamp.kro.kr/swagger-ui/index.html)
+## 📖 API 명세서
+[Swagger](http://jootcamp.kro.kr/swagger-ui/index.html)
