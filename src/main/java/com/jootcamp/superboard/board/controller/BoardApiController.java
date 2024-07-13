@@ -4,6 +4,8 @@ import com.jootcamp.superboard.board.controller.dto.BoardResponse;
 import com.jootcamp.superboard.board.service.dto.Board;
 import com.jootcamp.superboard.board.controller.dto.UpsertBoardRequest;
 import com.jootcamp.superboard.board.service.BoardService;
+import com.jootcamp.superboard.common.UserInfo;
+import com.jootcamp.superboard.user.controller.dto.AuthUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,29 +13,27 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.jootcamp.superboard.common.constants.UserConstant.USER_ID;
-
 @RequiredArgsConstructor
 @RestController
 public class BoardApiController {
     private final BoardService boardService;
 
     @PostMapping("/boards")
-    public ResponseEntity<Long> createBoard(@RequestBody UpsertBoardRequest request) {
-        Board savedBoard = boardService.create(request.toUpsertBoard(USER_ID));
+    public ResponseEntity<Long> createBoard(@RequestBody UpsertBoardRequest request, @UserInfo AuthUser authUser) {
+        Board savedBoard = boardService.create(request.toUpsertBoard(authUser.getUserId()));
         return ResponseEntity.status(HttpStatus.OK).body(savedBoard.getId());
     }
 
     @DeleteMapping("/boards/{boardId}")
-    public ResponseEntity<Void> deleteBoard(@PathVariable("boardId") long boardId) {
-        boardService.delete(USER_ID, boardId);
+    public ResponseEntity<Void> deleteBoard(@PathVariable("boardId") long boardId, @UserInfo AuthUser authUser) {
+        boardService.delete(authUser.getUserId(), boardId);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/boards/{boardId}")
-    public ResponseEntity<Long> updateBoard(@PathVariable("boardId") long boardId, @RequestBody UpsertBoardRequest request) {
-        Board board = boardService.update(request.toUpsertBoard(USER_ID), boardId);
+    public ResponseEntity<Long> updateBoard(@PathVariable("boardId") long boardId, @RequestBody UpsertBoardRequest request, @UserInfo AuthUser authUser) {
+        Board board = boardService.update(request.toUpsertBoard(authUser.getUserId()), boardId);
         return ResponseEntity.status(HttpStatus.OK).body(board.getId());
     }
 

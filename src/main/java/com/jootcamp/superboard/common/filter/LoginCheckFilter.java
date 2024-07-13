@@ -10,6 +10,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static com.jootcamp.superboard.common.constants.UserConstant.USER_INFO;
+
 @Component
 public class LoginCheckFilter extends OncePerRequestFilter {
     @Override
@@ -18,7 +20,7 @@ public class LoginCheckFilter extends OncePerRequestFilter {
         try {
                 System.out.println("통과");
                 HttpSession session = request.getSession(false);
-                if (session == null || session.getAttribute("userId") == null) {
+                if (session == null || session.getAttribute(USER_INFO) == null) {
                     System.out.println("미인증 사용자 요청 {}" + requestURI);
                     //로그인으로 redirect
                     response.sendError(401, "로그인 필요");
