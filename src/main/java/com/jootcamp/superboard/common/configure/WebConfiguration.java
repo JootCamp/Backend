@@ -1,13 +1,19 @@
 package com.jootcamp.superboard.common.configure;
 
+import com.jootcamp.superboard.common.UserArgumentResolver;
 import com.jootcamp.superboard.common.filter.LoginCheckFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
+
 @Configuration
+@RequiredArgsConstructor
 public class WebConfiguration implements WebMvcConfigurer {
     @Bean
     public FilterRegistrationBean<LoginCheckFilter> loginCheckFilterFilterRegistrationBean() {
@@ -24,5 +30,10 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .allowedMethods("*") // 허용할 HTTP 메서드 지정
                 .allowedHeaders("*") // 허용할 헤더 지정
                 .allowCredentials(true); // 자격 증명 허용 여부
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new UserArgumentResolver()); // 유저정보 가져와서 바인딩 할 수 있도록 등록
     }
 }

@@ -1,16 +1,19 @@
 package com.jootcamp.superboard.user.service;
 
 import com.jootcamp.superboard.common.PasswordEncoder;
+import com.jootcamp.superboard.user.controller.dto.AuthUser;
 import com.jootcamp.superboard.user.repository.UserRepository;
 import com.jootcamp.superboard.user.repository.entity.UserEntity;
 import com.jootcamp.superboard.user.repository.exception.AlreadyExistEmailException;
-import com.jootcamp.superboard.user.repository.exception.UserNotFoundException;
+import com.jootcamp.superboard.user.repository.exception.UserEmailNotFoundException;
 import com.jootcamp.superboard.user.service.dto.UpsertUser;
 import com.jootcamp.superboard.user.service.dto.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import static com.jootcamp.superboard.common.constants.UserConstant.USER_INFO;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +37,7 @@ public class UserService {
     //로그인
     public boolean login(User user, HttpServletRequest httpServletRequest) throws Exception {
         UserEntity userEntity = userRepository.findByEmailAndIsDeletedIsFalse(user.getEmail())
-                .orElseThrow(() -> new UserNotFoundException(user.getEmail()));
+                .orElseThrow(() -> new UserEmailNotFoundException(user.getEmail()));
 
         String encodingPass = passwordEncoder.encrypt(user.getPassword());
 
@@ -45,7 +48,12 @@ public class UserService {
             httpServletRequest.getSession().invalidate();
             HttpSession session = httpServletRequest.getSession(true);  // Session이 없으면 생성
             // 세션에 userId를 넣어줌
-            session.setAttribute("userId", user.getEmail());
+            session.setAttribute(USER_INFO, AuthUser.builder()
+                    .userId(userEntity.getId())
+                    .userEmail(userEntity.getEmail())
+                    .nickname(userEntity.getNickname())
+                    .build()
+            );
             session.setMaxInactiveInterval(1800); // Session이 30분동안 유지
 
             return true;
