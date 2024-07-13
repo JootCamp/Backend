@@ -1,6 +1,6 @@
 package com.jootcamp.superboard.user.repository.entity;
 
-import com.jootcamp.superboard.common.baseEntity.BaseWithDeletedEntity;
+import com.jootcamp.superboard.common.entity.BaseWithDeletedEntity;
 import com.jootcamp.superboard.user.service.dto.UpsertUser;
 import jakarta.persistence.*;
 import lombok.Builder;
