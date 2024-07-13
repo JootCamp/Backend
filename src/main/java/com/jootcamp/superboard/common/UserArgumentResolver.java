@@ -2,7 +2,7 @@ package com.jootcamp.superboard.common;
 
 
 import com.jootcamp.superboard.user.controller.dto.AuthUser;
-import com.jootcamp.superboard.user.repository.exception.UserEmailNotFoundException;
+import com.jootcamp.superboard.user.repository.exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.core.MethodParameter;
@@ -14,8 +14,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.util.Objects;
 import java.util.Optional;
-
-import static com.jootcamp.superboard.common.constants.UserConstant.USER_INFO;
 
 @Component
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
@@ -36,8 +34,8 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         HttpSession session = Objects.requireNonNull(request).getSession();
 
-        final AuthUser userInfo = (AuthUser) session.getAttribute(USER_INFO);
+        final AuthUser userInfo = (AuthUser) session.getAttribute("userInfo");
 
-        return Optional.of(userInfo).orElseThrow(UserEmailNotFoundException::new);
+        return Optional.of(userInfo).orElseThrow(UserNotFoundException::new);
     }
 }
