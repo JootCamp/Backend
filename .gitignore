@@ -54,3 +54,4 @@ gradle-app.setting
 
 ###.idea 폴더는 IntelliJ 의 IDE 옵션(프로젝트별 설정값)을 저장하는 폴더###
 .idea
+src/test/**
