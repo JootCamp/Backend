@@ -9,6 +9,7 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+
 ---
 spring:
   config:
@@ -17,9 +18,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${jdbcURL}
-    username: ${jdbcUsername}
-    password: ${jdbcPassword}
+    url: ENC(otcBFAtYYFq/mbA/5xikmIolbO4g5Hp4Uhq2bZb1p4oTC2U0NnwEz44RDMX+Qqrl)
+    username: ENC(DctjhSLWDCmyuDSsyI6WFw==)
+    password: ENC(DctjhSLWDCmyuDSsyI6WFw==)
 
 springdoc:
   api-docs:
@@ -54,8 +55,8 @@ spring:
       on-profile: profile3
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: ${jdbcURL}
-    username: ${jdbcUsername}
-    password: ${jdbcPassword}
+    url: ENC(5IXRSND9vYt8oje4azSe+v7f56G99TmKo5Tt46CdnAQ4rCKfMftkaJWpscZ00jj4y7egK2rAtRJRyP8v1U6ekbsWsatlURZsH53s15UxWyUtv/MJTMKLW7phgFa1S0JT)
+    username: ENC(tL/u2dsxQVNdHJS05MiCfw==)
+    password: ENC(hAPUYou39PAqGj6UujBdr2qpNG4ynekB)
 server:
   port: 80
