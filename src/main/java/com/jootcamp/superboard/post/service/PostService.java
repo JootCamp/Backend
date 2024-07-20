@@ -1,5 +1,7 @@
 package com.jootcamp.superboard.post.service;
 
+import com.jootcamp.superboard.common.dto.PageMetaData;
+import com.jootcamp.superboard.common.dto.ResponsePage;
 import com.jootcamp.superboard.post.repository.PostRepository;
 import com.jootcamp.superboard.post.repository.entity.PostEntity;
 import com.jootcamp.superboard.post.repository.execption.PostNotFoundException;
@@ -7,6 +9,8 @@ import com.jootcamp.superboard.post.service.dto.Post;
 import com.jootcamp.superboard.post.service.dto.UpsertPost;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,11 +25,18 @@ public class PostService {
         return Post.from(post);
     }
 
-    public List<Post> findAll() {
-        List<PostEntity> posts = postRepository.findAllByIsDeletedIsFalse();
-        return posts.stream()
-                .map(Post::from)
-                .toList();
+    public ResponsePage<List<Post>> findAll(Pageable pageable) {
+        Page<PostEntity> posts = postRepository.findAllByIsDeletedIsFalse(pageable);
+
+        List<Post> postList = posts.getContent().stream().map(Post::from).toList();
+        PageMetaData metaData = PageMetaData.builder()
+                .currentPage(pageable.getPageNumber())
+                .size(posts.getSize())
+                .totalCount(posts.getTotalElements())
+                .totalPageCount(posts.getTotalPages())
+                .build();
+
+        return new ResponsePage<>(postList, metaData);
     }
 
     public Post findById(long postId) {

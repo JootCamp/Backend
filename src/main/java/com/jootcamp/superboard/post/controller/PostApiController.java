@@ -1,12 +1,16 @@
 package com.jootcamp.superboard.post.controller;
 
 import com.jootcamp.superboard.common.UserInfo;
+import com.jootcamp.superboard.common.dto.ResponsePage;
 import com.jootcamp.superboard.post.dto.PostResponse;
 import com.jootcamp.superboard.post.dto.UpsertPostRequest;
 import com.jootcamp.superboard.post.service.PostService;
 import com.jootcamp.superboard.post.service.dto.Post;
 import com.jootcamp.superboard.user.controller.dto.AuthUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +30,10 @@ public class PostApiController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<PostResponse>> findAllPost() {
-        List<PostResponse> postResponses = postService.findAll()
-                .stream()
-                .map(PostResponse::from)
-                .toList();
-
-        return ResponseEntity.ok().body(postResponses);
+    public ResponseEntity<ResponsePage<List<Post>>> findAllPost(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
+                                                              Pageable pageable) {
+        ResponsePage<List<Post>> posts = postService.findAll(pageable);
+        return ResponseEntity.ok().body(posts);
     }
 
     @GetMapping("/posts/{postId}")
