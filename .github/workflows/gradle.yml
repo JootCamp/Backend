@@ -93,3 +93,4 @@ jobs:
           script: |  
             ps -ef | grep java || awk '{print $2}' | xargs kill -9
             nohup java -jar /home/ubuntu/jootCamp/build/libs/superboard-0.0.1-SNAPSHOT.jar --JASYPT_PASSWORD=${{ secrets.JASYPT_ENCRYPTOR_PASSWORD }} --spring.profiles.active=prod &
+
