@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PageMetaData {
+public class PageMetadata {
     private int currentPage;
     private int size;
     private long totalCount;

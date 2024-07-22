@@ -1,16 +1,16 @@
 package com.jootcamp.superboard.common.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter
-@Getter
-@NoArgsConstructor
+
+@Builder
 @AllArgsConstructor
-public class ResponsePage<T> {
-
+@NoArgsConstructor
+@Getter
+public class PageDTO<T> {
     private T data;
-    private PageMetaData pageMetaData;
+    private PageMetadata pageMetaData;
 }

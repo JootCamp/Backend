@@ -1,7 +1,7 @@
 package com.jootcamp.superboard.post.controller;
 
 import com.jootcamp.superboard.common.UserInfo;
-import com.jootcamp.superboard.common.dto.ResponsePage;
+import com.jootcamp.superboard.common.dto.PageResponse;
 import com.jootcamp.superboard.post.dto.PostResponse;
 import com.jootcamp.superboard.post.dto.UpsertPostRequest;
 import com.jootcamp.superboard.post.service.PostService;
@@ -30,10 +30,10 @@ public class PostApiController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<ResponsePage<List<Post>>> findAllPost(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
+    public ResponseEntity<PageResponse<List<Post>>> findAllPost(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
                                                               Pageable pageable) {
-        ResponsePage<List<Post>> posts = postService.findAll(pageable);
-        return ResponseEntity.ok().body(posts);
+        PageResponse<List<Post>> posts = new PageResponse<List<Post>>().from(postService.findAll(pageable));
+        return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/posts/{postId}")
