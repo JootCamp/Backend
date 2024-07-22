@@ -1,10 +1,10 @@
 package com.jootcamp.superboard.board.service;
 
+import com.jootcamp.superboard.board.repository.BoardRepository;
 import com.jootcamp.superboard.board.repository.entity.BoardEntity;
 import com.jootcamp.superboard.board.repository.exception.BoardNotFoundException;
-import com.jootcamp.superboard.board.service.dto.UpsertBoard;
 import com.jootcamp.superboard.board.service.dto.Board;
-import com.jootcamp.superboard.board.repository.BoardRepository;
+import com.jootcamp.superboard.board.service.dto.UpsertBoard;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
