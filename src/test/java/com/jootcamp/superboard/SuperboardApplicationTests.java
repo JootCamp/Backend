@@ -4,13 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jootcamp.superboard.board.controller.dto.UpsertBoardRequest;
 import com.jootcamp.superboard.board.repository.BoardRepository;
 import com.jootcamp.superboard.board.repository.entity.BoardEntity;
+import com.jootcamp.superboard.common.configure.JasyptConfiguration;
+import com.jootcamp.superboard.user.controller.dto.AuthUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ActiveProfiles;
@@ -29,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Import(JasyptConfiguration.class)
 @AutoConfigureMockMvc
 class SuperboardApplicationTests {
 
@@ -62,9 +65,7 @@ class SuperboardApplicationTests {
         final String requestBody = objectMapper.writeValueAsString(userRequest);
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", 2024L);
-        session.setAttribute("userEmail", "seee@sss.com");
-        session.setAttribute("nickname", "setset");
+        session.setAttribute("userInfo", new AuthUser(2024L, "ssets@aaa.com", "setset"));
 
         //when
         ResultActions result = mockMvc.perform(post(url).session(session)
@@ -154,9 +155,10 @@ class SuperboardApplicationTests {
         final String content = "웃긴 게시글만 모음";
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", 2024L);
-        session.setAttribute("userEmail", "seee@sss.com");
-        session.setAttribute("nickname", "setset");
+//        session.setAttribute("userId", 2024L);
+//        session.setAttribute("userEmail", "seee@sss.com");
+//        session.setAttribute("nickname", "setset");
+        session.setAttribute("userInfo", new AuthUser(2024L, "ssets@aaa.com", "setset"));
 
         BoardEntity boardEntity = boardRepository.save(BoardEntity.builder()
                 .title(title)
