@@ -10,9 +10,6 @@ spring:
       ddl-auto: update
     open-in-view: false
 
-jasypt:
-  encryptor:
-    password: ${JASYPT_PASSWORD}
 ---
 spring:
   config:
@@ -58,8 +55,17 @@ spring:
       on-profile: profile3
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: ENC(5IXRSND9vYt8oje4azSe+v7f56G99TmKo5Tt46CdnAQ4rCKfMftkaJWpscZ00jj4y7egK2rAtRJRyP8v1U6ekbsWsatlURZsH53s15UxWyUtv/MJTMKLW7phgFa1S0JT)
+    url: ENC(TPjb+vzYZkCQbLc50sqRvXPEZgRoCxQ7yFsCipklw3kik33v0vOMToxxjmJ2s6CXITpoQmSbQ02szi9lPhvFZszYCzBHHiaJ4tWlgSS4rs7GLLwrTaaP61x65gobx324PQr4jydOJ58=)
     username: ENC(tL/u2dsxQVNdHJS05MiCfw==)
     password: ENC(hAPUYou39PAqGj6UujBdr2qpNG4ynekB)
-server:
-  port: 80
+
+springdoc:
+  api-docs:
+    enabled: true
+    version: openapi_3_0
+  packages-to-scan: com.jootcamp.superboard
+  swagger-ui:
+    display-request-duration: true # 딜레이를 두고 요청하도록 설정
+    operations-sorter: alpha # (alpha: 알파벳 순으로 정렬, method: Http method 순으로 정렬)
+
+
