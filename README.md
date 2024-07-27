@@ -14,4 +14,4 @@
 모두 화이팅.   <br>
 
 ## 📖 API 명세서
-[Swagger](http://jootcamp.kro.kr/swagger-ui/index.html)
+[Swagger](http://ec2-13-125-19-45.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/index.html)
