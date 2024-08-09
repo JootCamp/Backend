@@ -7,6 +7,8 @@ import com.jootcamp.superboard.post.dto.UpsertPostRequest;
 import com.jootcamp.superboard.post.service.PostService;
 import com.jootcamp.superboard.post.service.dto.Post;
 import com.jootcamp.superboard.user.controller.dto.AuthUser;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,35 +22,41 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
+@Tag(name = "Post API", description = "게시글 서비스 API 명세서")
 public class PostApiController {
     private final PostService postService;
 
-    @PostMapping("/posts")
+    @PostMapping("/boards/{boardId}/posts")
+    @Operation(summary = "게시글 생성", description = "게시글 생성 API")
     public ResponseEntity<PostResponse> createPost(@RequestBody UpsertPostRequest postRequest, @UserInfo AuthUser authUser) {
         Post savedPost = postService.create(postRequest.toUpsertPost(authUser.getUserId()));
         return ResponseEntity.ok().body(PostResponse.from(savedPost));
     }
 
-    @GetMapping("/posts")
+    @GetMapping("/boards/{boardId}/posts")
+    @Operation(summary = "게시글 조회", description = "특정 게시판의 게시글 전체 조회 API")
     public ResponseEntity<PageResponse<List<Post>>> findAllPost(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
                                                               Pageable pageable) {
         PageResponse<List<Post>> posts = new PageResponse<List<Post>>().from(postService.findAll(pageable));
         return ResponseEntity.ok(posts);
     }
 
-    @GetMapping("/posts/{postId}")
+    @GetMapping("/boards/{boardId}/posts/{postId}")
+    @Operation(summary = "게시글 조회", description = "게시글 단건 조회 API")
     public ResponseEntity<PostResponse> findPost(@PathVariable("postId") long postId) {
         Post post = postService.findById(postId);
         return ResponseEntity.ok().body(PostResponse.from(post));
     }
 
-    @DeleteMapping("/posts/{postId}")
+    @DeleteMapping("/boards/{boardId}/posts/{postId}")
+    @Operation(summary = "게시글 삭제", description = "게시글 삭제 API")
     public ResponseEntity<Void> deletePost(@PathVariable("postId") long postId, @UserInfo AuthUser authUser) {
         postService.delete(authUser.getUserId(), postId);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/posts/{postId}")
+    @PutMapping("/boards/{boardId}/posts/{postId}")
+    @Operation(summary = "게시글 수정", description = "게시글 수정 API")
     public ResponseEntity<PostResponse> updateBoard(@PathVariable("postId") long postId, @RequestBody UpsertPostRequest upsertPostRequest, @UserInfo AuthUser authUser) {
         Post post = postService.update(upsertPostRequest.toUpsertPost(authUser.getUserId()), postId);
         return ResponseEntity.ok().body(PostResponse.from(post));
