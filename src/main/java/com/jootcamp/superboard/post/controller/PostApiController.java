@@ -31,13 +31,9 @@ public class PostApiController {
         return ResponseEntity.ok().body(PostResponse.from(savedPost));
     }
 
-    @GetMapping("/posts")
-    public ResponseEntity<PageResponse<Post>> findAllPost(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
     @GetMapping("/boards/{boardId}/posts")
     @Operation(summary = "게시글 조회", description = "특정 게시판의 게시글 전체 조회 API")
-    public ResponseEntity<PageResponse<List<Post>>> findAllPost(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
-                                                              Pageable pageable) {
-
+    public ResponseEntity<PageResponse<Post>> findAllPost(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         PageResponse<Post> posts = PageResponse.from(postService.findAll(pageable));
         return ResponseEntity.ok().body(posts);
     }
