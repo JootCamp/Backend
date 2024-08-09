@@ -17,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 @RequiredArgsConstructor
 @Controller
@@ -35,10 +33,9 @@ public class PostApiController {
 
     @GetMapping("/boards/{boardId}/posts")
     @Operation(summary = "게시글 조회", description = "특정 게시판의 게시글 전체 조회 API")
-    public ResponseEntity<PageResponse<List<Post>>> findAllPost(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
-                                                              Pageable pageable) {
-        PageResponse<List<Post>> posts = new PageResponse<List<Post>>().from(postService.findAll(pageable));
-        return ResponseEntity.ok(posts);
+    public ResponseEntity<PageResponse<Post>> findAllPost(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        PageResponse<Post> posts = PageResponse.from(postService.findAll(pageable));
+        return ResponseEntity.ok().body(posts);
     }
 
     @GetMapping("/boards/{boardId}/posts/{postId}")
