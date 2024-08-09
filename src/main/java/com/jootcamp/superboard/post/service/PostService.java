@@ -25,7 +25,7 @@ public class PostService {
         return Post.from(post);
     }
 
-    public PostPage<List<Post>> findAll(Pageable pageable) {
+    public PostPage<Post> findAll(Pageable pageable) {
         Page<PostEntity> posts = postRepository.findAllByIsDeletedIsFalse(pageable);
 
         List<Post> postList = posts.getContent().stream().map(Post::from).toList();
@@ -36,7 +36,7 @@ public class PostService {
                 .totalPageCount(posts.getTotalPages())
                 .build();
 
-        return PostPage.of(postList, metadata);
+        return new PostPage<>(postList, metadata);
     }
 
     public Post findById(long postId) {

@@ -1,4 +1,4 @@
-package com.jootcamp.superboard.post.service.dto;
+package com.jootcamp.superboard.comment.service.dto;
 
 import com.jootcamp.superboard.common.dto.PageDTO;
 import com.jootcamp.superboard.common.dto.PageMetadata;
@@ -6,14 +6,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-
 @NoArgsConstructor
-public class PostPage<Post> implements PageDTO<Post> {
-    private List<Post> posts;
+public class CommentPage<Comment> implements PageDTO<Comment> {
+    private List<Comment> comments;
     private PageMetadata pageMetadata;
 
-    public PostPage (List<Post> posts, PageMetadata pageMetadata) {
-        this.posts = posts;
+    public CommentPage (List<Comment> comments, PageMetadata pageMetadata){
+        this.comments = comments;
         this.pageMetadata = pageMetadata;
     }
 
@@ -23,7 +22,7 @@ public class PostPage<Post> implements PageDTO<Post> {
     }
 
     @Override
-    public List<Post> getData(){
-        return posts;
+    public List<Comment> getData() {
+        return comments;
     }
 }
