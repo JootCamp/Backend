@@ -4,8 +4,6 @@ import com.jootcamp.superboard.user.controller.dto.LoginRequest;
 import com.jootcamp.superboard.user.controller.dto.UpsertUserRequest;
 import com.jootcamp.superboard.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -25,13 +23,7 @@ public class UserApiController {
 
     //회원가입
     @PostMapping("/signup")
-    @Operation(summary = "회원가입", description = "회원가입을 위한 API")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "400", description = "이미 존재하는 이메일이라면 400 에러 응답"),
-                    @ApiResponse(responseCode = "200", description = "회원가입 성공하면 200 응답")
-            }
-    )
+    @Operation(summary = "회원 가입", description = "회원가입 API")
     public ResponseEntity<Boolean> signup(@RequestBody UpsertUserRequest userRequest) throws Exception {
         Boolean result = userService.signup(userRequest.toUpsertUser());
         return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -39,6 +31,7 @@ public class UserApiController {
 
     // 로그인
     @PostMapping("/login")
+    @Operation(summary = "로그인", description = "로그인 API")
     public ResponseEntity<Void> login(@RequestBody LoginRequest loginRequest,
                                       HttpServletRequest httpServletRequest) throws Exception {
         boolean result = userService.login(loginRequest.toUser(), httpServletRequest);
@@ -49,6 +42,7 @@ public class UserApiController {
     }
 
     @GetMapping("/isLogin")
+    @Operation(summary = "로그인 확인", description = "회원이 로그인 되어있는지 확인 API")
     public ResponseEntity<String> isLogin(HttpServletRequest httpRequest) {
         HttpSession session = httpRequest.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
