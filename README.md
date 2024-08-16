@@ -17,4 +17,4 @@
 [Swagger](http://ec2-13-125-19-45.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/index.html)
 
 ## 💽 ERD
-![ERD](https://github.com/user-attachments/assets/09ff837d-e9ae-4538-a591-6f0ef27a8076)
+![ERD](https://github.com/user-attachments/assets/ea756740-c9fc-4cd5-9c9c-e098bdcdd458)
