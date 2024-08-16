@@ -29,12 +29,7 @@ public class PostService {
         Page<PostEntity> posts = postRepository.findAllByIsDeletedIsFalse(pageable);
 
         List<Post> postList = posts.getContent().stream().map(Post::from).toList();
-        PageMetadata metadata = PageMetadata.builder()
-                .currentPage(pageable.getPageNumber())
-                .size(posts.getSize())
-                .totalCount(posts.getTotalElements())
-                .totalPageCount(posts.getTotalPages())
-                .build();
+        PageMetadata metadata = PageMetadata.of(pageable, posts);
 
         return new PostPage<>(postList, metadata);
     }

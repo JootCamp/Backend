@@ -51,12 +51,7 @@ public class CommentService {
         if(comments.getContent().isEmpty()) // 댓글이 존재하지 않음
             return new CommentPage<>(new ArrayList<>(), new PageMetadata());
 
-        PageMetadata metadata = PageMetadata.builder()
-                .currentPage(pageable.getPageNumber())
-                .size(comments.getSize())
-                .totalCount(comments.getTotalElements())
-                .totalPageCount(comments.getTotalPages())
-                .build();
+        PageMetadata metadata = PageMetadata.of(pageable, comments);
 
         List<Comment> existComments = new ArrayList<>();
 
