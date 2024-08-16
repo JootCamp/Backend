@@ -32,7 +32,7 @@ public class CommentApiController {
                                             @PathVariable("boardId") long boardId,
                                             @PathVariable("postId") long postId,
                                             @UserInfo AuthUser authUser) {
-        long commentId = commentService.addComments(request.toUpsertComment(postId, authUser.getUserId()));
+        long commentId = commentService.addComments(request.toUpsertComment(postId, authUser.getUserId(), authUser.getNickname()));
         return ResponseEntity.ok().body(new IdResponse(commentId));
     }
 
@@ -57,7 +57,7 @@ public class CommentApiController {
                                               @PathVariable("commentId") long commentId,
                                               @UserInfo AuthUser authUser) {
 
-        commentService.updateComment(request.toUpsertComment(postId, authUser.getUserId()),commentId);
+        commentService.updateComment(request.toUpsertComment(postId, authUser.getUserId(), authUser.getNickname()),commentId);
         return ResponseEntity.ok().body(new IdResponse(commentId));
     }
 

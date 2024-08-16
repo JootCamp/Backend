@@ -23,12 +23,15 @@ public class CommentEntity extends BaseWithDeletedEntity {
     private long userId;
     @Column(nullable = false)
     private long postId;
+    @Column(nullable = false)
+    private String writer;
 
     @Builder
-    public CommentEntity(String content, long postId, long userId){
+    public CommentEntity(String content, long postId, long userId, String writer){
         this.content = content;
         this.postId = postId;
         this.userId = userId;
+        this.writer = writer;
     }
 
     public void updateContent(String content){

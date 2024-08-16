@@ -11,9 +11,6 @@ import com.jootcamp.superboard.common.exception.UnauthorizedException;
 import com.jootcamp.superboard.post.repository.PostRepository;
 import com.jootcamp.superboard.post.repository.entity.PostEntity;
 import com.jootcamp.superboard.post.repository.execption.PostNotFoundException;
-import com.jootcamp.superboard.user.repository.UserRepository;
-import com.jootcamp.superboard.user.repository.entity.UserEntity;
-import com.jootcamp.superboard.user.repository.exception.NotFoundUserException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
     private final PostRepository postRepository;
 
     // 댓글 생성
@@ -53,22 +49,8 @@ public class CommentService {
 
         PageMetadata metadata = PageMetadata.of(pageable, comments);
 
-        List<Comment> existComments = new ArrayList<>();
-
-        // 작성자 추가 작업
-        for(CommentEntity entity : comments.getContent()){
-            UserEntity user = userRepository.findById(entity.getUserId())
-                    .orElseThrow(NotFoundUserException::new);
-
-            String writer = null;
-
-            if(user.isDeleted())
-                writer = "탈퇴한 회원";
-            else
-                writer = user.getNickname();
-
-            existComments.add(Comment.from(entity, writer));
-        }
+        List<Comment> existComments = comments.getContent().stream()
+                .map(Comment::from).toList();
 
         return new CommentPage<>(existComments, metadata);
 

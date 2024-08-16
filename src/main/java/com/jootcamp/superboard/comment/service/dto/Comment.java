@@ -17,10 +17,10 @@ public class Comment {
     private String writer;
     private LocalDateTime createdAt;
 
-    public static Comment from(CommentEntity entity, String writer){
+    public static Comment from(CommentEntity entity){
         return Comment.builder()
                 .commentId(entity.getId())
-                .writer(writer)
+                .writer(entity.getWriter())
                 .createdAt(entity.getModifiedAt())
                 .build();
     }
