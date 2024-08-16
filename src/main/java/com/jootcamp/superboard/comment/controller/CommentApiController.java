@@ -28,6 +28,7 @@ public class CommentApiController {
     @Operation(summary = "댓글 작성", description = "댓글 작성 API")
 
     public ResponseEntity<Void> postComment(@RequestBody UpsertCommentRequest request,
+                                            @PathVariable("boardId") long boardId,
                                             @PathVariable("postId") long postId,
                                             @UserInfo AuthUser authUser) {
         commentService.addComments(request.toUpsertComment(postId, authUser.getUserId()));
@@ -40,6 +41,7 @@ public class CommentApiController {
     @Operation(summary = "댓글 조회", description = "해당 게시글에 대한 댓글 조회")
 
     public ResponseEntity<PageResponse<Comment>> getComments(@RequestBody UpsertCommentRequest request,
+                                                             @PathVariable("boardId") long boardId,
                                                              @PathVariable("postId") long postId,
                                                              Pageable pageable) {
         PageResponse<Comment> comments = PageResponse.from(commentService.getComments(postId, pageable));
@@ -51,6 +53,7 @@ public class CommentApiController {
     @Operation(summary = "댓글 수정", description = "commentId에 해당하는 특정 댓글 수정")
 
     public ResponseEntity<Void> updateComment(@RequestBody UpsertCommentRequest request,
+                                              @PathVariable("boardId") long boardId,
                                               @PathVariable("postId") long postId,
                                               @PathVariable("commentId") long commentId,
                                               @UserInfo AuthUser authUser) {
@@ -64,6 +67,7 @@ public class CommentApiController {
     @Operation(summary = "댓글 삭제", description = "commentId에 해당하는 댓글 삭제")
 
     public ResponseEntity<List<CommentResponse>> deleteComment(@RequestBody UpsertCommentRequest request,
+                                                               @PathVariable("boardId") long boardId,
                                                                @PathVariable("postId") long postId,
                                                                @PathVariable("commentId") long commentId,
                                                                @UserInfo AuthUser user) {
