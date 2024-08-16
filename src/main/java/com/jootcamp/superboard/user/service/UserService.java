@@ -41,7 +41,7 @@ public class UserService {
 
         String encodingPass = passwordEncoder.encrypt(user.getPassword());
 
-        if (user.getPassword().equals(userEntity.getPassword())) {
+        if (encodingPass.equals(userEntity.getPassword())) {
             // 로그인 성공 => 세션 생성
 
             // 세션을 생성하기 전에 기존의 세션 파기
