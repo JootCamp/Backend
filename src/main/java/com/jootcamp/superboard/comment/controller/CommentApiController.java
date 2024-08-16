@@ -5,6 +5,7 @@ import com.jootcamp.superboard.comment.controller.dto.UpsertCommentRequest;
 import com.jootcamp.superboard.comment.service.CommentService;
 import com.jootcamp.superboard.comment.service.dto.Comment;
 import com.jootcamp.superboard.common.UserInfo;
+import com.jootcamp.superboard.common.dto.IdResponse;
 import com.jootcamp.superboard.common.dto.PageResponse;
 import com.jootcamp.superboard.user.controller.dto.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,13 +28,12 @@ public class CommentApiController {
     @PostMapping("/boards/{boardId}/posts/{postId}/comments")
     @Operation(summary = "댓글 작성", description = "댓글 작성 API")
 
-    public ResponseEntity<Void> postComment(@RequestBody UpsertCommentRequest request,
+    public ResponseEntity<IdResponse> postComment(@RequestBody UpsertCommentRequest request,
                                             @PathVariable("boardId") long boardId,
                                             @PathVariable("postId") long postId,
                                             @UserInfo AuthUser authUser) {
-        commentService.addComments(request.toUpsertComment(postId, authUser.getUserId()));
-        return ResponseEntity.ok().build();
-
+        long commentId = commentService.addComments(request.toUpsertComment(postId, authUser.getUserId()));
+        return ResponseEntity.ok().body(new IdResponse(commentId));
     }
 
     // 게시글 댓글 전체 조회
@@ -52,14 +52,14 @@ public class CommentApiController {
     @PutMapping("/boards/{boardId}/posts/{postId}/comments/{commentId}")
     @Operation(summary = "댓글 수정", description = "commentId에 해당하는 특정 댓글 수정")
 
-    public ResponseEntity<Void> updateComment(@RequestBody UpsertCommentRequest request,
+    public ResponseEntity<IdResponse> updateComment(@RequestBody UpsertCommentRequest request,
                                               @PathVariable("boardId") long boardId,
                                               @PathVariable("postId") long postId,
                                               @PathVariable("commentId") long commentId,
                                               @UserInfo AuthUser authUser) {
-        commentService.updateComment(request.toUpsertComment(postId, authUser.getUserId()),commentId);
 
-        return ResponseEntity.ok().build();
+        commentService.updateComment(request.toUpsertComment(postId, authUser.getUserId()),commentId);
+        return ResponseEntity.ok().body(new IdResponse(commentId));
     }
 
     // 댓글 삭제

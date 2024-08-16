@@ -20,9 +20,9 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
 
-    public Post create(UpsertPost upsertPost) {
+    public long create(UpsertPost upsertPost) {
         PostEntity post = postRepository.save(upsertPost.toEntity());
-        return Post.from(post);
+        return post.getId();
     }
 
     public PostPage<Post> findAll(Pageable pageable) {
@@ -56,12 +56,10 @@ public class PostService {
 
 
     @Transactional
-    public Post update(UpsertPost upsertPost, long postId) {
+    public void update(UpsertPost upsertPost, long postId) {
         PostEntity post = postRepository.findByIdAndIsDeletedIsFalse(postId)
                 .orElseThrow(()->new PostNotFoundException(postId));
 
         post.update(upsertPost.getTitle(), upsertPost.getContent(), upsertPost.getUserId());
-
-        return Post.from(post);
     }
 }

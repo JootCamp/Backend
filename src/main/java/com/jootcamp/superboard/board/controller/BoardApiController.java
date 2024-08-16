@@ -5,6 +5,7 @@ import com.jootcamp.superboard.board.service.dto.Board;
 import com.jootcamp.superboard.board.controller.dto.UpsertBoardRequest;
 import com.jootcamp.superboard.board.service.BoardService;
 import com.jootcamp.superboard.common.UserInfo;
+import com.jootcamp.superboard.common.dto.IdResponse;
 import com.jootcamp.superboard.user.controller.dto.AuthUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,9 +24,9 @@ public class BoardApiController {
 
     @PostMapping("/boards")
     @Operation(summary = "게시판 생성", description = "게시판 생성 API")
-    public ResponseEntity<Long> createBoard(@RequestBody UpsertBoardRequest request, @UserInfo AuthUser authUser) {
-        Board savedBoard = boardService.create(request.toUpsertBoard(authUser.getUserId()));
-        return ResponseEntity.status(HttpStatus.OK).body(savedBoard.getId());
+    public ResponseEntity<IdResponse> createBoard(@RequestBody UpsertBoardRequest request, @UserInfo AuthUser authUser) {
+        long boardId = boardService.create(request.toUpsertBoard(authUser.getUserId()));
+        return ResponseEntity.ok().body(new IdResponse(boardId));
     }
 
     @DeleteMapping("/boards/{boardId}")
@@ -33,21 +34,21 @@ public class BoardApiController {
     public ResponseEntity<Void> deleteBoard(@PathVariable("boardId") long boardId, @UserInfo AuthUser authUser) {
         boardService.delete(authUser.getUserId(), boardId);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/boards/{boardId}")
     @Operation(summary = "게시판 수정", description = "게시판 수정 API")
-    public ResponseEntity<Long> updateBoard(@PathVariable("boardId") long boardId, @RequestBody UpsertBoardRequest request, @UserInfo AuthUser authUser) {
-        Board board = boardService.update(request.toUpsertBoard(authUser.getUserId()), boardId);
-        return ResponseEntity.status(HttpStatus.OK).body(board.getId());
+    public ResponseEntity<IdResponse> updateBoard(@PathVariable("boardId") long boardId, @RequestBody UpsertBoardRequest request, @UserInfo AuthUser authUser) {
+        boardService.update(request.toUpsertBoard(authUser.getUserId()), boardId);
+        return ResponseEntity.ok().body(new IdResponse(boardId));
     }
 
     @GetMapping("/boards/{boardId}")
     @Operation(summary = "게시판 조회", description = "게시판 단건 조회 API")
     public ResponseEntity<BoardResponse> findBoard(@PathVariable("boardId") long boardId) {
         Board board = boardService.findById(boardId);
-        return ResponseEntity.status(HttpStatus.OK).body(BoardResponse.from(board));
+        return ResponseEntity.ok().body(BoardResponse.from(board));
     }
 
     @GetMapping("/boards")

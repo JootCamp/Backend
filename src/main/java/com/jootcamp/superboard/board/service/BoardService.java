@@ -16,9 +16,9 @@ import java.util.List;
 public class BoardService {
     private final BoardRepository boardRepository;
 
-    public Board create(UpsertBoard upsertBoard) {
+    public long create(UpsertBoard upsertBoard) {
         BoardEntity board = boardRepository.save(upsertBoard.toEntity());
-        return Board.from(board);
+        return board.getId();
     }
 
     public List<Board> findAll() {
@@ -45,17 +45,11 @@ public class BoardService {
     }
 
     @Transactional
-    public Board update(UpsertBoard updateBoard, long boardId) {
+    public void update(UpsertBoard updateBoard, long boardId) {
         BoardEntity board = boardRepository.findByIdAndIsDeletedIsFalse(boardId)
                 .orElseThrow(()-> new BoardNotFoundException(boardId));
 
         board.update(updateBoard.getTitle(), updateBoard.getDescription(), updateBoard.getUserId());
-
-        return Board.builder()
-                .id(board.getId())
-                .title(board.getTitle())
-                .description(board.getDescription())
-        .build();
     }
 
 }

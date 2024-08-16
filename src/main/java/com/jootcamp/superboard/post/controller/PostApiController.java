@@ -1,6 +1,7 @@
 package com.jootcamp.superboard.post.controller;
 
 import com.jootcamp.superboard.common.UserInfo;
+import com.jootcamp.superboard.common.dto.IdResponse;
 import com.jootcamp.superboard.common.dto.PageResponse;
 import com.jootcamp.superboard.post.dto.PostResponse;
 import com.jootcamp.superboard.post.dto.UpsertPostRequest;
@@ -26,11 +27,11 @@ public class PostApiController {
 
     @PostMapping("/boards/{boardId}/posts")
     @Operation(summary = "게시글 생성", description = "게시글 생성 API")
-    public ResponseEntity<PostResponse> createPost(@RequestBody UpsertPostRequest postRequest,
-                                                   @PathVariable("boardId") long boardId,
-                                                   @UserInfo AuthUser authUser) {
-        Post savedPost = postService.create(postRequest.toUpsertPost(authUser.getUserId()));
-        return ResponseEntity.ok().body(PostResponse.from(savedPost));
+    public ResponseEntity<IdResponse> createPost(@RequestBody UpsertPostRequest postRequest,
+                                                 @PathVariable("boardId") long boardId,
+                                                 @UserInfo AuthUser authUser) {
+        long postId = postService.create(postRequest.toUpsertPost(authUser.getUserId()));
+        return ResponseEntity.ok().body(new IdResponse(postId));
     }
 
     @GetMapping("/boards/{boardId}/posts")
@@ -59,11 +60,11 @@ public class PostApiController {
 
     @PutMapping("/boards/{boardId}/posts/{postId}")
     @Operation(summary = "게시글 수정", description = "게시글 수정 API")
-    public ResponseEntity<PostResponse> updateBoard(@PathVariable("boardId") long boardId,
+    public ResponseEntity<IdResponse> updateBoard(@PathVariable("boardId") long boardId,
                                                     @PathVariable("postId") long postId,
                                                     @RequestBody UpsertPostRequest upsertPostRequest,
                                                     @UserInfo AuthUser authUser) {
-        Post post = postService.update(upsertPostRequest.toUpsertPost(authUser.getUserId()), postId);
-        return ResponseEntity.ok().body(PostResponse.from(post));
+        postService.update(upsertPostRequest.toUpsertPost(authUser.getUserId()), postId);
+        return ResponseEntity.ok().body(new IdResponse(postId));
     }
 }

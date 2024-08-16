@@ -31,9 +31,10 @@ public class CommentService {
     private final PostRepository postRepository;
 
     // 댓글 생성
-    public void addComments(UpsertComment upsertComment){
+    public long addComments(UpsertComment upsertComment){
         existPost(upsertComment.getPostId());
-        commentRepository.save(upsertComment.toEntity());
+        CommentEntity comment = commentRepository.save(upsertComment.toEntity());
+        return comment.getId();
     }
 
     // 댓글 전체 조회
