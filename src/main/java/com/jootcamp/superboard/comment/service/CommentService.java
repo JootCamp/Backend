@@ -64,7 +64,7 @@ public class CommentService {
         CommentEntity comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(commentId));
 
-        hasPermission(userId, comment.getUserId());
+        checkPermission(userId, comment.getUserId());
 
         comment.setDeleted(false);
 
@@ -81,7 +81,7 @@ public class CommentService {
                 .orElseThrow(()->new CommentNotFoundException(commentId));
 
         // 3. 해당하는 사용자가 권한이 있는가?
-        hasPermission(upsertComment.getUserId(), comment.getUserId());
+        checkPermission(upsertComment.getUserId(), comment.getUserId());
 
         // 4. 수정
         comment.updateContent(upsertComment.getContent());
@@ -98,7 +98,7 @@ public class CommentService {
 
     }
 
-    private void hasPermission(long requestUserId, long commentUserId){
+    private void checkPermission(long requestUserId, long commentUserId){
         if(requestUserId!=commentUserId)
             throw new ForbiddenException("권한 없음");
     }
