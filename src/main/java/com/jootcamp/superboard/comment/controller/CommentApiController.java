@@ -52,7 +52,7 @@ public class CommentApiController {
     @PutMapping("/boards/{boardId}/posts/{postId}/comments/{commentId}")
     @Operation(summary = "댓글 수정", description = "commentId에 해당하는 특정 댓글 수정")
 
-    public ResponseEntity<Void> updateComment(@RequestBody UpsertCommentRequest request,
+    public ResponseEntity<IdResponse> updateComment(@RequestBody UpsertCommentRequest request,
                                               @PathVariable("postId") long postId,
                                               @PathVariable("commentId") long commentId,
                                               @UserInfo AuthUser authUser) {

@@ -60,8 +60,8 @@ public class PostApiController {
 
     @PutMapping("/boards/{boardId}/posts/{postId}")
     @Operation(summary = "게시글 수정", description = "게시글 수정 API")
-    public ResponseEntity<PostResponse> updateBoard(@PathVariable("postId") long postId, @RequestBody UpsertPostRequest upsertPostRequest, @UserInfo AuthUser authUser) {
-        Post post = postService.update(upsertPostRequest.toUpsertPost(authUser.getUserId()), postId);
-        return ResponseEntity.ok().body(PostResponse.from(post));
+    public ResponseEntity<IdResponse> updateBoard(@PathVariable("postId") long postId, @RequestBody UpsertPostRequest upsertPostRequest, @UserInfo AuthUser authUser) {
+        postService.update(upsertPostRequest.toUpsertPost(authUser.getUserId()), postId);
+        return ResponseEntity.ok().body(new IdResponse(postId));
     }
 }
