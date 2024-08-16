@@ -7,7 +7,7 @@ import com.jootcamp.superboard.comment.service.dto.Comment;
 import com.jootcamp.superboard.comment.service.dto.CommentPage;
 import com.jootcamp.superboard.comment.service.dto.UpsertComment;
 import com.jootcamp.superboard.common.dto.PageMetadata;
-import com.jootcamp.superboard.common.exception.UnauthorizedException;
+import com.jootcamp.superboard.common.exception.ForbiddenException;
 import com.jootcamp.superboard.post.repository.PostRepository;
 import com.jootcamp.superboard.post.repository.entity.PostEntity;
 import com.jootcamp.superboard.post.repository.execption.PostNotFoundException;
@@ -64,7 +64,7 @@ public class CommentService {
         CommentEntity comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(commentId));
 
-        authorized(userId, comment);
+        checkPermission(userId, comment.getUserId());
 
         comment.setDeleted(false);
 
@@ -81,7 +81,7 @@ public class CommentService {
                 .orElseThrow(()->new CommentNotFoundException(commentId));
 
         // 3. 해당하는 사용자가 권한이 있는가?
-        authorized(upsertComment.getUserId(), comment);
+        checkPermission(upsertComment.getUserId(), comment.getUserId());
 
         // 4. 수정
         comment.updateContent(upsertComment.getContent());
@@ -98,9 +98,9 @@ public class CommentService {
 
     }
 
-    private void authorized(long userId, CommentEntity comment){
-        if(comment.getUserId()!=userId)
-            throw new UnauthorizedException("권한이 없습니다");
+    private void checkPermission(long requestUserId, long commentUserId){
+        if(requestUserId!=commentUserId)
+            throw new ForbiddenException("권한 없음");
     }
 
 }
