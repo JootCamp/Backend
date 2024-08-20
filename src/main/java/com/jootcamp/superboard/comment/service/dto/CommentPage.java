@@ -1,13 +1,13 @@
 package com.jootcamp.superboard.comment.service.dto;
 
-import com.jootcamp.superboard.common.dto.PageDTO;
+import com.jootcamp.superboard.common.dto.PageDto;
 import com.jootcamp.superboard.common.dto.PageMetadata;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @NoArgsConstructor
-public class CommentPage<Comment> implements PageDTO<Comment> {
+public class CommentPage<Comment> implements PageDto<Comment> {
     private List<Comment> comments;
     private PageMetadata pageMetadata;
 

@@ -1,6 +1,6 @@
 package com.jootcamp.superboard.post.service.dto;
 
-import com.jootcamp.superboard.common.dto.PageDTO;
+import com.jootcamp.superboard.common.dto.PageDto;
 import com.jootcamp.superboard.common.dto.PageMetadata;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @NoArgsConstructor
-public class PostPage<Post> implements PageDTO<Post> {
+public class PostPage<Post> implements PageDto<Post> {
     private List<Post> posts;
     private PageMetadata pageMetadata;
 
