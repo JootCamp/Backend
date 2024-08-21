@@ -4,8 +4,8 @@ import com.jootcamp.superboard.comment.repository.CommentRepository;
 import com.jootcamp.superboard.comment.repository.entity.CommentEntity;
 import com.jootcamp.superboard.comment.repository.exception.CommentNotFoundException;
 import com.jootcamp.superboard.comment.service.dto.Comment;
-import com.jootcamp.superboard.comment.service.dto.CommentPage;
 import com.jootcamp.superboard.comment.service.dto.UpsertComment;
+import com.jootcamp.superboard.common.dto.PageDto;
 import com.jootcamp.superboard.common.dto.PageMetadata;
 import com.jootcamp.superboard.common.exception.ForbiddenException;
 import com.jootcamp.superboard.post.repository.PostRepository;
@@ -34,7 +34,7 @@ public class CommentService {
     }
 
     // 댓글 전체 조회
-    public CommentPage<Comment> getComments(long postId, Pageable pageable){
+    public PageDto<Comment> getComments(long postId, Pageable pageable){
         /*
         @ comments : Page<CommentEntity>
         @ existComments: List<CommentEntity> 작성자를 추가하기 위해 comments에서 CommentEntity만 추출
@@ -44,15 +44,15 @@ public class CommentService {
 
         Page<CommentEntity> comments = commentRepository.findAllByPostIdAndIsDeletedIsFalse(postId, pageable);
 
-        if(comments.getContent().isEmpty()) // 댓글이 존재하지 않음
-            return new CommentPage<>(new ArrayList<>(), new PageMetadata());
+        if(comments.getContent().isEmpty()) // 댓글이 존재하지 않음, 빈 페이지 반환
+            return PageDto.of(new ArrayList<>(), new PageMetadata());
 
         PageMetadata metadata = PageMetadata.of(pageable, comments);
 
         List<Comment> existComments = comments.getContent().stream()
                 .map(Comment::from).toList();
 
-        return new CommentPage<>(existComments, metadata);
+        return PageDto.of(existComments, metadata);
 
     }
 
