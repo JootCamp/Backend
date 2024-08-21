@@ -15,7 +15,7 @@ public class PageResponse<T> {
 
     public static<T> PageResponse<T> from(PageDto<T> pageDTO) {
         return PageResponse.<T>builder()
-                .data(pageDTO.getData())
+                .data(pageDTO.getContents())
                 .metadata(pageDTO.getPageMetadata())
                 .build();
     }
