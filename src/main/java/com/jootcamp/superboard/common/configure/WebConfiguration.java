@@ -2,12 +2,15 @@ package com.jootcamp.superboard.common.configure;
 
 import com.jootcamp.superboard.common.UserArgumentResolver;
 import com.jootcamp.superboard.common.filter.LoginCheckFilter;
+import com.jootcamp.superboard.common.intercepter.PostCheckInterceptor;
+import com.jootcamp.superboard.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -15,6 +18,9 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class WebConfiguration implements WebMvcConfigurer {
+
+    private final PostRepository postRepository;
+
     @Bean
     public FilterRegistrationBean<LoginCheckFilter> loginCheckFilterFilterRegistrationBean() {
         FilterRegistrationBean<LoginCheckFilter> registrationBean = new FilterRegistrationBean<>();
@@ -30,6 +36,12 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .allowedMethods("*") // 허용할 HTTP 메서드 지정
                 .allowedHeaders("*") // 허용할 헤더 지정
                 .allowCredentials(true); // 자격 증명 허용 여부
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new PostCheckInterceptor(postRepository))
+                .addPathPatterns("/boards/*/posts/*/comments/*");
     }
 
     @Override
