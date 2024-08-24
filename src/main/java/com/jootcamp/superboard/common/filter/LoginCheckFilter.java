@@ -46,7 +46,7 @@ public class LoginCheckFilter extends OncePerRequestFilter {
             return request.getMethod().equals("GET");
         }
 
-        String[] excludePath = {"/login", "/logout", "/css/*", "/signup", "/swagger", "/v3"};
+        String[] excludePath = {"/login", "/logout", "/css/*", "/signup", "/swagger", "/v3", "/favicon.ico"};
 
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }
