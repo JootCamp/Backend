@@ -28,7 +28,6 @@ public class CommentService {
 
     // 댓글 생성
     public long addComments(UpsertComment upsertComment){
-        existPost(upsertComment.getPostId());
         CommentEntity comment = commentRepository.save(upsertComment.toEntity());
         return comment.getId();
     }
@@ -39,9 +38,6 @@ public class CommentService {
         @ comments : Page<CommentEntity>
         @ existComments: List<CommentEntity> 작성자를 추가하기 위해 comments에서 CommentEntity만 추출
          */
-
-        existPost(postId);
-
         Page<CommentEntity> comments = commentRepository.findAllByPostIdAndIsDeletedIsFalse(postId, pageable);
 
         if(comments.getContent().isEmpty()) // 댓글이 존재하지 않음, 빈 페이지 반환
@@ -59,7 +55,6 @@ public class CommentService {
     // 댓글 삭제
     @Transactional
     public void deleteComment(long commentId, long postId, long userId){
-        existPost(postId);
 
         CommentEntity comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(commentId));
@@ -74,7 +69,7 @@ public class CommentService {
     @Transactional
     public void updateComment(UpsertComment upsertComment, long commentId){
         // 1. 해당 게시글 존재 하느가?
-        existPost(upsertComment.getPostId());
+        // PostInterceptor로 대체
 
         // 2. 해당 댓글이 존재하느가?
         CommentEntity comment = commentRepository.findByIdAndIsDeletedIsFalse(commentId)
@@ -85,16 +80,6 @@ public class CommentService {
 
         // 4. 수정
         comment.updateContent(upsertComment.getContent());
-
-    }
-
-    private void existPost(long postId){
-
-        // 존재하지 않은 게시글을 조회할 때
-        PostEntity post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
-
-        if(post.isDeleted()) // 삭제된 게시글을 조회할 때
-            throw new PostNotFoundException(postId);
 
     }
 
