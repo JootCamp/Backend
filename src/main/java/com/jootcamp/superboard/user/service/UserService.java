@@ -59,13 +59,15 @@ public class UserService {
                     .build()
             );
             session.setMaxInactiveInterval(1800); // Session이 30분동안 유지
+
+
             String token= jwtUtil.createJwt(user.getEmail());
 
-            Cookie jwtCookie = new Cookie("jwt", token);
+            Cookie jwtCookie = new Cookie("JOOT_TOKEN", token);
             jwtCookie.setHttpOnly(true);  // JS로 쿠키에 접근할 수 없도록 설정 (보안 강화)
             jwtCookie.setSecure(true);    // HTTPS에서만 전송되도록 설정 (개발 환경에서는 false로 설정 가능)
             jwtCookie.setPath("/");       // 쿠키가 전송될 경로 설정
-            jwtCookie.setMaxAge(60 * 30); // 쿠키의 만료 시간 설정 (30분)
+            jwtCookie.setMaxAge(60 * 60 * 24); // 쿠키의 만료 시간 설정 (1일)
 
             // 응답에 쿠키 추가
             httpServletResponse.addCookie(jwtCookie);

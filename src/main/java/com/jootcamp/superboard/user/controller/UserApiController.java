@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "User API", description = "유저 서비스를 위한 API 명세서입니다.")
 public class UserApiController {
     private final UserService userService;
-    private final HttpServletResponse httpServletResponse;
 
     //회원가입
     @PostMapping("/signup")

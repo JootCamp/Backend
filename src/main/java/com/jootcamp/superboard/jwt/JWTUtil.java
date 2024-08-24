@@ -11,12 +11,8 @@ import java.util.Date;
 
 @Component
 public class JWTUtil {
-    private final SecretKey key;
-
-    public JWTUtil(@Value("${spring.jwt.secret}") String secret)
-    {
-        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
-    }
+    @Value("${spring.jwt.secret}")
+    private String key;
 
     //JWT 생성
     public String createJwt(String userEmail)
@@ -25,7 +21,7 @@ public class JWTUtil {
                 .claim("userEmail",userEmail)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(key)
+                .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(key)))
                 .compact();
     }
 }

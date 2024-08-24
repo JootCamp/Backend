@@ -14,7 +14,8 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
-
+  jwt:
+    secret: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd6eXoxMjMxMjMxMjMxMjMxMjMxMzEyMzEyMzEzMTIzMTIzMTIzMTMxMjMxMzEzMTMxMjM   # jwt 암호화 키
 ---
 spring:
   config:
@@ -37,6 +38,7 @@ springdoc:
     operations-sorter: alpha # (alpha: 알파벳 순으로 정렬, method: Http method 순으로 정렬)
 
 ---
+
 spring:
   config:
     activate:
@@ -52,7 +54,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
 ---
 spring:
   config:
@@ -74,8 +75,6 @@ springdoc:
     operations-sorter: alpha # (alpha: 알파벳 순으로 정렬, method: Http method 순으로 정렬)
     
 ---
-spring:
-  jwt:
-    secret: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd6eXoxMjMxMjMxMjMxMjMxMjMxMzEyMzEyMzEzMTIzMTIzMTIzMTMxMjMxMzEzMTMxMjM   # jwt 암호화 키
+
 
 
