@@ -72,5 +72,10 @@ springdoc:
   swagger-ui:
     display-request-duration: true # 딜레이를 두고 요청하도록 설정
     operations-sorter: alpha # (alpha: 알파벳 순으로 정렬, method: Http method 순으로 정렬)
+    
+---
+spring:
+  jwt:
+    secret: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd6eXoxMjMxMjMxMjMxMjMxMjMxMzEyMzEyMzEzMTIzMTIzMTIzMTMxMjMxMzEzMTMxMjM   # jwt 암호화 키
 
 
