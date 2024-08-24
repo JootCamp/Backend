@@ -1,11 +1,11 @@
 package com.jootcamp.superboard.post.service;
 
+import com.jootcamp.superboard.common.dto.PageDto;
 import com.jootcamp.superboard.common.dto.PageMetadata;
 import com.jootcamp.superboard.post.repository.PostRepository;
 import com.jootcamp.superboard.post.repository.entity.PostEntity;
 import com.jootcamp.superboard.post.repository.execption.PostNotFoundException;
 import com.jootcamp.superboard.post.service.dto.Post;
-import com.jootcamp.superboard.post.service.dto.PostPage;
 import com.jootcamp.superboard.post.service.dto.UpsertPost;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +25,13 @@ public class PostService {
         return post.getId();
     }
 
-    public PostPage<Post> findAll(Pageable pageable) {
+    public PageDto<Post> findAll(Pageable pageable) {
         Page<PostEntity> posts = postRepository.findAllByIsDeletedIsFalse(pageable);
 
         List<Post> postList = posts.getContent().stream().map(Post::from).toList();
         PageMetadata metadata = PageMetadata.of(pageable, posts);
 
-        return new PostPage<>(postList, metadata);
+        return PageDto.of(postList, metadata);
     }
 
     public Post findById(long postId) {
