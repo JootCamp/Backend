@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table
+@Table(name = "post")
 public class PostEntity extends BaseWithDeletedEntity {
 
     @Id
