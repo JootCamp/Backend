@@ -40,7 +40,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(postCheckInterceptor)
-                .addPathPatterns("/boards/*/posts/*/comments/*");
+                .addPathPatterns("/boards/{boardId}/posts/{postId}/**");
     }
 
     @Override
