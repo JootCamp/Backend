@@ -64,4 +64,10 @@ public class PostService {
         postRepository.existsByBoardIdAndIdAndIsDeletedIsFalse(boardId, postId)
                 .orElseThrow(()->new PostNotFoundException(postId))
     }
+
+    // 게시글과 게시판 검증
+    public void validatePost(long boardId, long postId){
+        postRepository.findByBoardIdAndIdIsDeletedIsFalse(boardId, postId)
+                .orElseThrow(()->new BadRequestException("게시판과 게시글을 확인해주세요"));
+    }
 }
