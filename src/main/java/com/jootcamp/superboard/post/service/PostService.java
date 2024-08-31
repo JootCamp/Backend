@@ -25,7 +25,7 @@ public class PostService {
         return post.getId();
     }
 
-    public PageDto<Post> findAll(Pageable pageable) {
+    public PageDto<Post> findAll(Pageable pageable, long boardId) {
         Page<PostEntity> posts = postRepository.findAllByIsDeletedIsFalse(pageable);
 
         List<Post> postList = posts.getContent().stream().map(Post::from).toList();
@@ -55,6 +55,6 @@ public class PostService {
         PostEntity post = postRepository.findByIdAndIsDeletedIsFalse(postId)
                 .orElseThrow(()->new PostNotFoundException(postId));
 
-        post.update(upsertPost.getTitle(), upsertPost.getContent(), upsertPost.getUserId());
+        post.update(upsertPost.getTitle(), upsertPost.getContent(), upsertPost.getUserId(), upsertPost.getBoardId());
     }
 }

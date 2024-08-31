@@ -30,7 +30,7 @@ public class PostApiController {
     public ResponseEntity<IdResponse> createPost(@RequestBody UpsertPostRequest postRequest,
                                                  @PathVariable("boardId") long boardId,
                                                  @UserInfo AuthUser authUser) {
-        long postId = postService.create(postRequest.toUpsertPost(authUser.getUserId()));
+        long postId = postService.create(postRequest.toUpsertPost(authUser.getUserId(), boardId));
         return ResponseEntity.ok().body(new IdResponse(postId));
     }
 
@@ -38,21 +38,20 @@ public class PostApiController {
     @Operation(summary = "게시글 조회", description = "특정 게시판의 게시글 전체 조회 API")
     public ResponseEntity<PageResponse<Post>> findAllPost(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                                           @PathVariable("boardId") long boardId) {
-        PageResponse<Post> posts = PageResponse.from(postService.findAll(pageable));
+        PageResponse<Post> posts = PageResponse.from(postService.findAll(pageable, boardId));
         return ResponseEntity.ok().body(posts);
     }
 
     @GetMapping("/boards/{boardId}/posts/{postId}")
     @Operation(summary = "게시글 조회", description = "게시글 단건 조회 API")
-    public ResponseEntity<PostResponse> findPost(@PathVariable("boardId") long boardId, @PathVariable("postId") long postId) {
+    public ResponseEntity<PostResponse> findPost(@PathVariable("postId") long postId) {
         Post post = postService.findById(postId);
         return ResponseEntity.ok().body(PostResponse.from(post));
     }
 
     @DeleteMapping("/boards/{boardId}/posts/{postId}")
     @Operation(summary = "게시글 삭제", description = "게시글 삭제 API")
-    public ResponseEntity<Void> deletePost(@PathVariable("boardId") long boardId,
-                                           @PathVariable("postId") long postId,
+    public ResponseEntity<Void> deletePost(@PathVariable("postId") long postId,
                                            @UserInfo AuthUser authUser) {
         postService.delete(authUser.getUserId(), postId);
         return ResponseEntity.noContent().build();
@@ -60,8 +59,11 @@ public class PostApiController {
 
     @PutMapping("/boards/{boardId}/posts/{postId}")
     @Operation(summary = "게시글 수정", description = "게시글 수정 API")
-    public ResponseEntity<IdResponse> updateBoard(@PathVariable("postId") long postId, @RequestBody UpsertPostRequest upsertPostRequest, @UserInfo AuthUser authUser) {
-        postService.update(upsertPostRequest.toUpsertPost(authUser.getUserId()), postId);
+    public ResponseEntity<IdResponse> updateBoard(@PathVariable("postId") long postId,
+                                                  @PathVariable("boardId") long boardId,
+                                                  @RequestBody UpsertPostRequest upsertPostRequest,
+                                                  @UserInfo AuthUser authUser) {
+        postService.update(upsertPostRequest.toUpsertPost(authUser.getUserId(), boardId), postId);
         return ResponseEntity.ok().body(new IdResponse(postId));
     }
 }

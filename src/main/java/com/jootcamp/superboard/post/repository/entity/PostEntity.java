@@ -22,12 +22,15 @@ public class PostEntity extends BaseWithDeletedEntity {
 
     private String content;
 
+    private long boardId;
+
     @Builder
-    public PostEntity(String title, String content, long userId){
+    public PostEntity(String title, String content, long userId, long boardId){
         this.title = title;
         this.content = content;
         this.setCreatedBy(userId);
         this.setDeleted(false);
+        this.boardId = boardId;
     }
 
     public void delete(long userId) {
@@ -35,10 +38,11 @@ public class PostEntity extends BaseWithDeletedEntity {
         this.setDeleted(true);
     }
 
-    public void update(String title, String content, long userId) {
+    public void update(String title, String content, long userId, long boardId) {
         this.title = title;
         this.content = content;
         this.setModifiedBy(userId);
+        this.boardId = boardId;
     }
 
 }
