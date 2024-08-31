@@ -2,6 +2,7 @@ package com.jootcamp.superboard.post.service;
 
 import com.jootcamp.superboard.common.dto.PageDto;
 import com.jootcamp.superboard.common.dto.PageMetadata;
+import com.jootcamp.superboard.common.exception.BadRequestException;
 import com.jootcamp.superboard.post.repository.PostRepository;
 import com.jootcamp.superboard.post.repository.entity.PostEntity;
 import com.jootcamp.superboard.post.repository.execption.PostNotFoundException;
@@ -56,5 +57,11 @@ public class PostService {
                 .orElseThrow(()->new PostNotFoundException(postId));
 
         post.update(upsertPost.getTitle(), upsertPost.getContent(), upsertPost.getUserId(), upsertPost.getBoardId());
+    }
+
+    // 게시글과 게시판 검증
+    public void validatePost(long boardId, long postId){
+        postRepository.findByBoardIdAndIdIsDeletedIsFalse(boardId, postId)
+                .orElseThrow(()->new BadRequestException("게시판과 게시글을 확인해주세요"));
     }
 }
