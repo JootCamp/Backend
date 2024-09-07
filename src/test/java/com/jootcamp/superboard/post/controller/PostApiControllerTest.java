@@ -42,7 +42,7 @@ class PostApiControllerTest {
     protected ObjectMapper objectMapper;
 
     @BeforeEach
-    public void BoardSetUp() {
+    public void setUpBoard() {
         boardRepository.deleteAll();
 
         BoardEntity board = BoardEntity.builder()
