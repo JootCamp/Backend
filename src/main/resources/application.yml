@@ -15,7 +15,7 @@ spring:
       ddl-auto: update
     open-in-view: false
   jwt:
-    secret: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd6eXoxMjMxMjMxMjMxMjMxMjMxMzEyMzEyMzEzMTIzMTIzMTIzMTMxMjMxMzEzMTMxMjM   # jwt 암호화 키
+    secret: ENC(FZXCCO4pzAgo5EIUeWqZ5ocm5DG4TWvi0lu6b6FcyBgmXWoPwoGQLelRVseb1ezcccq6ILWfm5949bdQ3d5XN29b3sQPgc+ao/+sBIkpVFstuVira4y7hJd1ykoybngYFxArF9zd9uvVWEV9JdzKxw==)   # jwt 암호화 키
 ---
 spring:
   config:
