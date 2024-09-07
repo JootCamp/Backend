@@ -24,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final PostRepository postRepository;
 
     // 댓글 생성
     public long addComments(UpsertComment upsertComment){

@@ -2,6 +2,7 @@ package com.jootcamp.superboard.post.service;
 
 import com.jootcamp.superboard.common.dto.PageDto;
 import com.jootcamp.superboard.common.dto.PageMetadata;
+import com.jootcamp.superboard.common.exception.BadRequestException;
 import com.jootcamp.superboard.post.repository.PostRepository;
 import com.jootcamp.superboard.post.repository.entity.PostEntity;
 import com.jootcamp.superboard.post.repository.execption.PostNotFoundException;
@@ -55,6 +56,12 @@ public class PostService {
         PostEntity post = postRepository.findByIdAndIsDeletedIsFalse(postId)
                 .orElseThrow(()->new PostNotFoundException(postId));
 
-        post.update(upsertPost.getTitle(), upsertPost.getContent(), upsertPost.getUserId(), upsertPost.getBoardId());
+        post.update(upsertPost.getTitle(), upsertPost.getContent(), upsertPost.getUserId(), upsertPost.getBoardId())
+    }
+
+    // 게시글과 게시판 검증
+    public void existsPost(long boardId, long postId){
+        postRepository.existsByBoardIdAndIdAndIsDeletedIsFalse(boardId, postId)
+                .orElseThrow(()->new PostNotFoundException(postId))
     }
 }

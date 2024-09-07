@@ -1,39 +1,52 @@
 package com.jootcamp.superboard.common.intercepter;
 
-import com.jootcamp.superboard.post.repository.PostRepository;
-import com.jootcamp.superboard.post.repository.execption.PostNotFoundException;
+import com.jootcamp.superboard.board.service.BoardService;
+import com.jootcamp.superboard.common.exception.BadRequestException;
+import com.jootcamp.superboard.post.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.HandlerMapping;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 public class PostCheckInterceptor implements HandlerInterceptor {
 
-    private final PostRepository postRepository;
+    private final BoardService boardService;
+    private final PostService postService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String uri = request.getRequestURI();
-        String pattern = "/boards/(\\d+)/posts/(\\d+)/comments(/(\\d+)?)?";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(uri);
+        Map<String, String> pathVariables =
+                (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
+        if (!pathVariables.isEmpty()) {
+            try {
+                Long boardId = parseLong(pathVariables.get("boardId"));
+                Long postId = parseLong(pathVariables.get("postId"));
 
-        if(matcher.find()) {
-            Long boardId = Long.parseLong(matcher.group(1));
-            Long postId = Long.parseLong(matcher.group(2));
-            Long commentId = matcher.group(4) != null ? Long.parseLong(matcher.group(4)) : null;
+                // board 안에 post 있는지 확인
+                boardService.existsBoard(boardId);
+                postService.existsPost(boardId, postId);
 
-            postRepository.findByIdAndIsDeletedIsFalse(postId)
-                    .orElseThrow(()-> new PostNotFoundException(postId));
+            } catch (Exception e) {
+                return false;
+            }
         }
 
         return true;
     }
+
+    private Long parseLong(String value) {
+        try {
+            return value != null ? Long.parseLong(value) : null;
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
 }
+
