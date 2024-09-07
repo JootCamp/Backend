@@ -14,7 +14,8 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
-
+  jwt:
+    secret: ENC(FZXCCO4pzAgo5EIUeWqZ5ocm5DG4TWvi0lu6b6FcyBgmXWoPwoGQLelRVseb1ezcccq6ILWfm5949bdQ3d5XN29b3sQPgc+ao/+sBIkpVFstuVira4y7hJd1ykoybngYFxArF9zd9uvVWEV9JdzKxw==)   # jwt 암호화 키
 ---
 spring:
   config:
@@ -37,6 +38,7 @@ springdoc:
     operations-sorter: alpha # (alpha: 알파벳 순으로 정렬, method: Http method 순으로 정렬)
 
 ---
+
 spring:
   config:
     activate:
@@ -52,7 +54,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
 ---
 spring:
   config:
@@ -72,5 +73,8 @@ springdoc:
   swagger-ui:
     display-request-duration: true # 딜레이를 두고 요청하도록 설정
     operations-sorter: alpha # (alpha: 알파벳 순으로 정렬, method: Http method 순으로 정렬)
+    
+---
+
 
 

@@ -6,6 +6,7 @@ import com.jootcamp.superboard.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,10 +32,9 @@ public class UserApiController {
 
     // 로그인
     @PostMapping("/login")
-    @Operation(summary = "로그인", description = "로그인 API")
     public ResponseEntity<Void> login(@RequestBody LoginRequest loginRequest,
-                                      HttpServletRequest httpServletRequest) throws Exception {
-        boolean result = userService.login(loginRequest.toUser(), httpServletRequest);
+                                      HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
+        boolean result = userService.login(loginRequest.toUser(), httpServletRequest, httpServletResponse);
         if (result) return ResponseEntity.status(HttpStatus.OK).build();
 
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

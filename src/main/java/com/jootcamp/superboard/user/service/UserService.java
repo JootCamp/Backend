@@ -1,6 +1,7 @@
 package com.jootcamp.superboard.user.service;
 
 import com.jootcamp.superboard.common.PasswordEncoder;
+import com.jootcamp.superboard.jwt.JWTUtil;
 import com.jootcamp.superboard.user.controller.dto.AuthUser;
 import com.jootcamp.superboard.user.repository.UserRepository;
 import com.jootcamp.superboard.user.repository.entity.UserEntity;
@@ -8,7 +9,9 @@ import com.jootcamp.superboard.user.repository.exception.AlreadyExistEmailExcept
 import com.jootcamp.superboard.user.repository.exception.UserEmailNotFoundException;
 import com.jootcamp.superboard.user.service.dto.UpsertUser;
 import com.jootcamp.superboard.user.service.dto.User;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import static com.jootcamp.superboard.common.constants.UserConstant.USER_INFO;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JWTUtil jwtUtil;
 
     //유저 생성
     public boolean signup(UpsertUser userData) throws Exception {
@@ -35,7 +39,7 @@ public class UserService {
     }
 
     //로그인
-    public boolean login(User user, HttpServletRequest httpServletRequest) throws Exception {
+    public boolean login(User user, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
         UserEntity userEntity = userRepository.findByEmailAndIsDeletedIsFalse(user.getEmail())
                 .orElseThrow(() -> new UserEmailNotFoundException(user.getEmail()));
 
@@ -55,6 +59,19 @@ public class UserService {
                     .build()
             );
             session.setMaxInactiveInterval(1800); // Session이 30분동안 유지
+
+
+            String token= jwtUtil.createJwt(user.getEmail());
+
+            Cookie jwtCookie = new Cookie("JOOT_TOKEN", token);
+            jwtCookie.setHttpOnly(true);  // JS로 쿠키에 접근할 수 없도록 설정 (보안 강화)
+            jwtCookie.setSecure(true);    // HTTPS에서만 전송되도록 설정 (개발 환경에서는 false로 설정 가능)
+            jwtCookie.setPath("/");       // 쿠키가 전송될 경로 설정
+            jwtCookie.setMaxAge(60 * 60 * 24); // 쿠키의 만료 시간 설정 (1일)
+
+            // 응답에 쿠키 추가
+            httpServletResponse.addCookie(jwtCookie);
+
 
             return true;
         } else return false;
