@@ -10,4 +10,6 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
 
     Optional<BoardEntity> findByIdAndIsDeletedIsFalse(Long boardId);
     List<BoardEntity> findAllByIsDeletedIsFalse();
+
+    boolean existsByIdAndIsDeletedIsFalse(Long boardId);
 }

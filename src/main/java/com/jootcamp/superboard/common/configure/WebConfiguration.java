@@ -2,8 +2,7 @@ package com.jootcamp.superboard.common.configure;
 
 import com.jootcamp.superboard.common.UserArgumentResolver;
 import com.jootcamp.superboard.common.filter.LoginCheckFilter;
-import com.jootcamp.superboard.common.intercepter.PostCheckInterceptor;
-import com.jootcamp.superboard.post.repository.PostRepository;
+import com.jootcamp.superboard.common.interceptor.PostCheckInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebConfiguration implements WebMvcConfigurer {
 
-    private final PostRepository postRepository;
+    private final PostCheckInterceptor postCheckInterceptor;
 
     @Bean
     public FilterRegistrationBean<LoginCheckFilter> loginCheckFilterFilterRegistrationBean() {
@@ -40,8 +39,8 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new PostCheckInterceptor(postRepository))
-                .addPathPatterns("/boards/*/posts/*/comments/*");
+        registry.addInterceptor(postCheckInterceptor)
+                .addPathPatterns("/boards/{boardId}/posts/{postId}/**");
     }
 
     @Override

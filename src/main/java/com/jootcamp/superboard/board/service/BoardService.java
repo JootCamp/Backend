@@ -53,9 +53,8 @@ public class BoardService {
         board.update(updateBoard.getTitle(), updateBoard.getDescription(), updateBoard.getUserId());
     }
 
-    public void existsBoard(Long boardId) {
-        boardRepository.findByIdAndIsDeletedIsFalse(boardId)
-                .orElseThrow(() -> new BoardNotFoundException(boardId));
+    public boolean existsBoard(Long boardId) {
+        return boardRepository.existsByIdAndIsDeletedIsFalse(boardId);
     }
 
 }
