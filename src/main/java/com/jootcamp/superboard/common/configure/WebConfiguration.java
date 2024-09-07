@@ -2,7 +2,7 @@ package com.jootcamp.superboard.common.configure;
 
 import com.jootcamp.superboard.common.UserArgumentResolver;
 import com.jootcamp.superboard.common.filter.LoginCheckFilter;
-import com.jootcamp.superboard.common.intercepter.PostCheckInterceptor;
+import com.jootcamp.superboard.common.interceptor.PostCheckInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

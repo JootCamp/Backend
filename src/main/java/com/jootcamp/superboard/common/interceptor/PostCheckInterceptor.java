@@ -1,7 +1,8 @@
-package com.jootcamp.superboard.common.intercepter;
+package com.jootcamp.superboard.common.interceptor;
 
+import com.jootcamp.superboard.board.repository.exception.BoardNotFoundException;
 import com.jootcamp.superboard.board.service.BoardService;
-import com.jootcamp.superboard.common.exception.BadRequestException;
+import com.jootcamp.superboard.post.repository.execption.PostNotFoundException;
 import com.jootcamp.superboard.post.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,17 +26,14 @@ public class PostCheckInterceptor implements HandlerInterceptor {
                 (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
         if (!pathVariables.isEmpty()) {
-            try {
-                Long boardId = parseLong(pathVariables.get("boardId"));
-                Long postId = parseLong(pathVariables.get("postId"));
 
-                // board 안에 post 있는지 확인
-                boardService.existsBoard(boardId);
-                postService.existsPost(boardId, postId);
+            Long boardId = parseLong(pathVariables.get("boardId"));
+            Long postId = parseLong(pathVariables.get("postId"));
 
-            } catch (Exception e) {
-                return false;
-            }
+            // board 안에 post 있는지 확인
+            if(!boardService.existsBoard(boardId)) throw new BoardNotFoundException(boardId);
+            if(!postService.existsPost(boardId, postId)) throw new PostNotFoundException(postId);
+           ;
         }
 
         return true;
