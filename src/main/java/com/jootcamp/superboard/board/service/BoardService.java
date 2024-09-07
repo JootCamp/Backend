@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -50,6 +51,11 @@ public class BoardService {
                 .orElseThrow(()-> new BoardNotFoundException(boardId));
 
         board.update(updateBoard.getTitle(), updateBoard.getDescription(), updateBoard.getUserId());
+    }
+
+    public void existsBoard(Long boardId) {
+        boardRepository.findByIdAndIsDeletedIsFalse(boardId)
+                .orElseThrow(() -> new BoardNotFoundException(boardId));
     }
 
 }

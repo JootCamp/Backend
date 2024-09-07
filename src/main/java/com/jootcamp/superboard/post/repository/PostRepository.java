@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
     Optional<PostEntity> findByIdAndIsDeletedIsFalse(Long postId);
     Page<PostEntity> findAllByIsDeletedIsFalse(Pageable pageable);
-    Optional<PostEntity> findByBoardIdAndIdIsDeletedIsFalse(long boardId, long postId);
+    Optional<PostEntity> existsByBoardIdAndIdIsDeletedIsFalse(long boardId, long postId);
 }

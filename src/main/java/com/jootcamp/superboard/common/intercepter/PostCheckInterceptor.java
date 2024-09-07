@@ -1,5 +1,6 @@
 package com.jootcamp.superboard.common.intercepter;
 
+import com.jootcamp.superboard.board.service.BoardService;
 import com.jootcamp.superboard.common.exception.BadRequestException;
 import com.jootcamp.superboard.post.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PostCheckInterceptor implements HandlerInterceptor {
 
+    private final BoardService boardService;
     private final PostService postService;
 
     @Override
@@ -22,17 +24,16 @@ public class PostCheckInterceptor implements HandlerInterceptor {
         Map<String, String> pathVariables =
                 (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
-        if (pathVariables != null) {
+        if (!pathVariables.isEmpty()) {
             try {
                 Long boardId = parseLong(pathVariables.get("boardId"));
                 Long postId = parseLong(pathVariables.get("postId"));
 
                 // board 안에 post 있는지 확인
-                if (boardId != null && postId != null) {
-                    postService.validatePost(boardId, postId);
-                }
+                boardService.existsBoard(boardId);
+                postService.existsPost(boardId, postId);
+
             } catch (Exception e) {
-               // throw new BadRequestException("유효하지 않은 path값 입니다");
                 return false;
             }
         }
