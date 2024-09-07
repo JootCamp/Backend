@@ -56,18 +56,12 @@ public class PostService {
         PostEntity post = postRepository.findByIdAndIsDeletedIsFalse(postId)
                 .orElseThrow(()->new PostNotFoundException(postId));
 
-        post.update(upsertPost.getTitle(), upsertPost.getContent(), upsertPost.getUserId(), upsertPost.getBoardId())
+        post.update(upsertPost.getTitle(), upsertPost.getContent(), upsertPost.getUserId(), upsertPost.getBoardId());
     }
 
     // 게시글과 게시판 검증
     public void existsPost(long boardId, long postId){
-        postRepository.existsByBoardIdAndIdAndIsDeletedIsFalse(boardId, postId)
-                .orElseThrow(()->new PostNotFoundException(postId))
-    }
-
-    // 게시글과 게시판 검증
-    public void validatePost(long boardId, long postId){
-        postRepository.findByBoardIdAndIdIsDeletedIsFalse(boardId, postId)
-                .orElseThrow(()->new BadRequestException("게시판과 게시글을 확인해주세요"));
+        postRepository.existsByBoardIdAndIdIsDeletedIsFalse(boardId, postId)
+                .orElseThrow(()->new PostNotFoundException(postId));
     }
 }
