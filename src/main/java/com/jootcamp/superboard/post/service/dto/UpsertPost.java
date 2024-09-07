@@ -14,12 +14,14 @@ public class UpsertPost {
     private String title;
     private String content;
     private Long userId;
+    private long boardId;
 
     public PostEntity toEntity() {
         return PostEntity.builder()
                 .title(title)
                 .content(content)
                 .userId(userId)
+                .boardId(boardId)
                 .build();
     }
 }

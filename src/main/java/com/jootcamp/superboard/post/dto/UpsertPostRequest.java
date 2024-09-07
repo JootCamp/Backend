@@ -12,11 +12,12 @@ public class UpsertPostRequest {
     private String title;
     private String content;
 
-    public UpsertPost toUpsertPost(long userId) {
+    public UpsertPost toUpsertPost(long userId, long boardId) {
         return UpsertPost.builder()
                 .title(title)
                 .content(content)
                 .userId(userId)
+                .boardId(boardId)
                 .build();
     }
 }

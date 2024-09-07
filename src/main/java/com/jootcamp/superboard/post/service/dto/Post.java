@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class Post {
     private String title;
     private String content;
+    private long boardId;
     private Long id;
     private Long userId;
     private LocalDateTime time;
@@ -23,6 +24,7 @@ public class Post {
         return Post.builder()
                 .title(post.getTitle())
                 .content(post.getContent())
+                .boardId(post.getBoardId())
                 .id(post.getId())
                 .userId(post.getCreatedBy())
                 .time(post.getModifiedAt())
