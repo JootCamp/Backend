@@ -61,7 +61,7 @@ public class PostService {
 
     // 게시글과 게시판 검증
     public void existsPost(long boardId, long postId){
-        postRepository.existsByBoardIdAndIdIsDeletedIsFalse(boardId, postId)
+        postRepository.existsByBoardIdAndIdAndIsDeletedIsFalse(boardId, postId)
                 .orElseThrow(()->new PostNotFoundException(postId));
     }
 }
