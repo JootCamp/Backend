@@ -16,8 +16,6 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.jootcamp.superboard.common.constants.UserConstant.USER_INFO;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -52,7 +50,7 @@ public class UserService {
             httpServletRequest.getSession().invalidate();
             HttpSession session = httpServletRequest.getSession(true);  // Session이 없으면 생성
             // 세션에 userId를 넣어줌
-            session.setAttribute(USER_INFO, AuthUser.builder()
+            session.setAttribute("USER_INFO", AuthUser.builder()
                     .userId(userEntity.getId())
                     .userEmail(userEntity.getEmail())
                     .nickname(userEntity.getNickname())

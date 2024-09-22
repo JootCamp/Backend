@@ -11,8 +11,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static com.jootcamp.superboard.common.constants.UserConstant.USER_INFO;
-
 @Component
 public class LoginCheckFilter extends OncePerRequestFilter {
     @Override
@@ -21,7 +19,7 @@ public class LoginCheckFilter extends OncePerRequestFilter {
         try {
             HttpSession session = request.getSession(false); // 세션이 존재하는지 확인하고, 존재하면 세션 객체를 반환하고, 존재하지 않으면 null을 반환하는 용도
 
-            if (session == null || session.getAttribute(USER_INFO) == null) {
+            if (session == null || session.getAttribute("USER_INFO") == null) {
                 response.sendError(401, "로그인 필요");
                 return; //여기가 중요, 미인증 사용자는 다음으로 진행하지 않고 끝!
             }
