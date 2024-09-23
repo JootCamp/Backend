@@ -15,8 +15,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.jootcamp.superboard.common.constants.UserConstant.USER_INFO;
-
 @Component
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
@@ -36,7 +34,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         HttpSession session = Objects.requireNonNull(request).getSession();
 
-        final AuthUser userInfo = (AuthUser) session.getAttribute(USER_INFO);
+        final AuthUser userInfo = (AuthUser) session.getAttribute("USER_INFO");
 
         return Optional.of(userInfo).orElseThrow(UserEmailNotFoundException::new);
     }
